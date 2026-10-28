@@ -1,0 +1,41 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "azuread",
+    "color": "#446595",
+    "icon": "azuread.png",
+    "version": "v3.7.0",
+    "github_url": "https://github.com/hashicorp/terraform-provider-azuread",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azuread/refs/heads/{version}/docs/resources/{resource}.md"
+  },
+  "Module": {
+    "resource_mapping": {},
+    "output_files": {
+      "resource": true,
+      "variables": true,
+      "outputs": true,
+      "lookup_variables": true,
+      "readme": true,
+      "examples": true,
+      "zip_path": "modules/{developer}/{provider}/{resource}"
+    }
+  },
+  "ResourceGraph": {
+    "defaultResource": "user",
+    "enableFullDependencyScan": false
+  },
+  "ProviderFiles": {
+    "modules_tf": {
+      "filename": "{provider}.modules.tf",
+      "enabled": true
+    },
+    "variables_tf": {
+      "filename": "{provider}.variables.tf",
+      "enabled": true
+    },
+    "provider_tf": {
+      "filename": "{provider}.provider.tf",
+      "enabled": true
+    }
+  }
+}

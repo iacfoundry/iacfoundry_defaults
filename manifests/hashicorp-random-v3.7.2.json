@@ -1,0 +1,16 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "random",
+    "version": "v3.7.2",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-random/{version}/docs/resources/{resource}.md",
+    "color": "#969696",
+    "icon": "hashicorp.png",
+    "github_url": "https://github.com/hashicorp/terraform-provider-random"
+  },
+  "Module": {},
+  "ResourceGraph": {
+    "defaultResource": "password",
+    "enableFullDependencyScan": false
+  }
+}

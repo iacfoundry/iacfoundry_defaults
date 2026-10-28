@@ -1,0 +1,143 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "azurerm",
+    "color": "#4879d1",
+    "icon": "azurerm.png",
+    "version": "v4.60.0",
+    "github_url": "https://github.com/hashicorp/terraform-provider-azurerm",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/{version}/website/docs/r/{resource}.html.markdown"
+  },
+  "Module": {
+    "resource_mapping": {
+      "resource_group_name": {
+        "resource": "azurerm_resource_group",
+        "lookup": false
+      },
+      "virtual_network_name": {
+        "resource": "azurerm_virtual_network",
+        "lookup": false
+      },
+      "virtual_network_subnet_ids": "azurerm_subnet",
+      "public_ip_address_id": "azurerm_public_ip"
+    },
+    "output_files": {
+      "resource": true,
+      "variables": true,
+      "outputs": true,
+      "lookup_variables": true,
+      "readme": true,
+      "examples": true,
+      "zip_path": "modules/{developer}/{provider}/{resource}"
+    }
+  },
+  "ProviderFiles": {
+    "modules_tf": {
+      "filename": "{provider}.modules.tf",
+      "enabled": true
+    },
+    "variables_tf": {
+      "filename": "{provider}.variables.tf",
+      "enabled": true
+    },
+    "provider_tf": {
+      "filename": "{provider}.provider.tf",
+      "enabled": true
+    },
+    "defaults": {
+      "variable_format": "module.azurerm_defaults.merge[\"{resource}\"]",
+      "enabled": false
+    }
+  },
+  "ResourceGraph": {
+    "defaultResource": "subscription",
+    "enableFullDependencyScan": false
+  },
+  "ImportSettings": {
+    "portalUrl": "https://portal.azure.com",
+    "startingResource": "azurerm_subscription",
+    "filterHierarchy": [
+      {
+        "name": "Management Group",
+        "field": "managementGroup",
+        "resourceType": "azurerm_management_group"
+      },
+      {
+        "name": "Subscription",
+        "field": "subscription",
+        "resourceType": "azurerm_subscription"
+      },
+      {
+        "name": "Resource Group",
+        "field": "resourceGroup",
+        "resourceType": "azurerm_resource_group"
+      }
+    ],
+    "authOptions": [
+      {
+        "id": "service_principal",
+        "name": "Service Principal",
+        "properties": {
+          "tenant_id": {
+            "title": "Tenant ID",
+            "type": [
+              "string"
+            ],
+            "description": "Azure AD Tenant (Directory) ID.",
+            "sensitive": false
+          },
+          "client_id": {
+            "title": "Client ID",
+            "type": [
+              "string"
+            ],
+            "description": "Application (client) ID of the Service Principal.",
+            "sensitive": false
+          },
+          "client_secret": {
+            "title": "Client Secret",
+            "type": [
+              "string"
+            ],
+            "description": "Client secret for the Service Principal.",
+            "sensitive": true
+          }
+        }
+      },
+      {
+        "id": "device_code",
+        "name": "Device Code",
+        "properties": {
+          "tenant_id": {
+            "title": "Tenant ID",
+            "type": [
+              "string"
+            ],
+            "description": "Azure AD Tenant (Directory) ID.",
+            "sensitive": false
+          }
+        }
+      },
+      {
+        "id": "interactive",
+        "name": "Interactive Login",
+        "properties": {
+          "tenant_id": {
+            "title": "Tenant ID",
+            "type": [
+              "string"
+            ],
+            "description": "Azure AD Tenant (Directory) ID.",
+            "sensitive": false
+          }
+        }
+      }
+    ],
+    "managedByIndicator": {
+      "method": "tag",
+      "tagKey": "managedby",
+      "tagValue": "terraform"
+    },
+    "resourceIdPattern": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/{resource_provider}/{resource_type}/{resource_name}"
+  }
+}

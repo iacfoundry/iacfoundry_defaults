@@ -1,0 +1,602 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Terraform Provider Manifest Schema",
+    "description": "A schema describing how Terraform provider documentation manifests should be structured.",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "Global": {
+            "title": "Global Settings",
+            "description": "Settings that apply to the entire provider and all generation processes.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "developer": {
+                    "title": "Developer",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Developer or organization (e.g., hashicorp, databricks).",
+                    "default": null,
+                    "example": "hashicorp",
+                    "details": ""
+                },
+                "provider": {
+                    "title": "Provider",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Terraform provider name (e.g., azurerm, azuread, aws).",
+                    "default": null,
+                    "example": "azurerm",
+                    "details": ""
+                },
+                "version": {
+                    "title": "Provider Version",
+                    "type": "string",
+                    "description": "Provider version tag or branch.",
+                    "default": "main",
+                    "example": "v4.60.0",
+                    "details": ""
+                },
+                "github_url": {
+                    "title": "GitHub URL",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "URL to the provider's GitHub repository, used for version identification.",
+                    "default": null,
+                    "example": "https://github.com/hashicorp/terraform-provider-azurerm",
+                    "details": ""
+                },
+                "rawMarkdownUrlPattern": {
+                    "title": "Raw Markdown URL Pattern",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "URL pattern to fetch raw markdown documentation. Supports {version} and {resource} placeholders.",
+                    "default": null,
+                    "example": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/{version}/website/docs/r/{resource}.html.markdown",
+                    "details": ""
+                },
+                "icon": {
+                    "title": "Tile Icon",
+                    "description": "Icon for provider tile",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "",
+                    "example": "azure.png"
+                },
+                "color": {
+                    "title": "Interface Card Color",
+                    "description": "Color for the provider card",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": "#050912",
+                    "example": "blue"
+                }
+            },
+            "required": [
+                "developer",
+                "provider",
+                "version",
+                "github_url"
+            ]
+        },
+        "Module": {
+            "title": "Module Generation Settings",
+            "description": "Settings controlling module output behavior.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "resource_providers": {
+                    "title": "Resource Providers",
+                    "description": "Define which provider each resource should use. Provider can be an alias or 'all' for multi-provider resources.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "resource": {
+                                "type": "string",
+                                "description": "The resource name (e.g., 'cluster', 'ip_access_list')"
+                            },
+                            "provider": {
+                                "type": "string",
+                                "description": "Provider alias from ProviderFiles.providers or 'all' for both"
+                            }
+                        },
+                        "required": [
+                            "resource",
+                            "provider"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "default": [],
+                    "example": [
+                        {
+                            "resource": "cluster",
+                            "provider": "workspace"
+                        },
+                        {
+                            "resource": "ip_access_list",
+                            "provider": "all"
+                        }
+                    ]
+                },
+                "include_deprecated": {
+                    "title": "Include Deprecated",
+                    "description": "If enabled (default), arguments and blocks the provider marks as deprecated are generated and labelled 'Deprecated by provider' in variables.tf. Disable to omit them, for example when moving to a new major provider version.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "override_readme_callout": {
+                    "title": "Override README Callout",
+                    "description": "If enabled, each resource README includes a section explaining how to customize the module in a hand-written {resource}.resource_override.tf file, with examples. The generator never creates or overwrites override files; all generated logic stays in the main resource file.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "resource_mapping": {
+                    "title": "Resource Mapping",
+                    "description": "Map field names to specific resource types, optionally controlling lookup behavior.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Name of the Terraform resource type."
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "resource": {
+                                        "type": "string",
+                                        "description": "Name of the Terraform resource type."
+                                    },
+                                    "lookup": {
+                                        "type": "boolean",
+                                        "description": "Whether to generate a lookup variable resolution for this field.",
+                                        "default": true
+                                    }
+                                },
+                                "required": [
+                                    "resource"
+                                ],
+                                "additionalProperties": false
+                            }
+                        ]
+                    },
+                    "default": {},
+                    "example": {
+                        "resource_group_name": {
+                            "resource": "azurerm_resource_group",
+                            "lookup": false
+                        },
+                        "virtual_network_subnet_ids": "azurerm_subnet"
+                    }
+                },
+                "output_files": {
+                    "title": "Output Files",
+                    "description": "Control which files are generated for the module.",
+                    "type": "object",
+                    "properties": {
+                        "resource": {
+                            "title": "Resource File",
+                            "oneOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "filename": {
+                                            "type": "string",
+                                            "description": "Template for filename. Supports variables like {resource}, {provider}."
+                                        }
+                                    }
+                                }
+                            ],
+                            "default": true
+                        },
+                        "variables": {
+                            "title": "Variables File",
+                            "oneOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "filename": {
+                                            "type": "string",
+                                            "description": "Template for filename. Supports variables like {resource}, {provider}."
+                                        }
+                                    }
+                                }
+                            ],
+                            "default": true
+                        },
+                        "outputs": {
+                            "title": "Outputs File",
+                            "oneOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "filename": {
+                                            "type": "string",
+                                            "description": "Template for filename. Supports variables like {resource}, {provider}."
+                                        }
+                                    }
+                                }
+                            ],
+                            "default": true
+                        },
+                        "lookup_variables": {
+                            "title": "Lookup Variables File",
+                            "oneOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "filename": {
+                                            "type": "string",
+                                            "description": "Template for filename. Supports variables like {resource}, {provider}."
+                                        }
+                                    }
+                                }
+                            ],
+                            "default": true
+                        },
+                        "readme": {
+                            "title": "README.md",
+                            "oneOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "filename": {
+                                            "type": "string",
+                                            "description": "Template for filename. Supports variables like {resource}, {provider}."
+                                        }
+                                    }
+                                }
+                            ],
+                            "default": true
+                        },
+                        "examples": {
+                            "title": "Examples File",
+                            "oneOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "filename": {
+                                            "type": "string",
+                                            "description": "Template for filename. Supports variables like {resource}, {provider}."
+                                        }
+                                    }
+                                }
+                            ],
+                            "default": true
+                        },
+                        "zip_path": {
+                            "title": "Zip Hierarchy Path",
+                            "type": "string",
+                            "description": "Template for directory structure in the valid zip file. Supports {developer}, {provider}, {resource}.",
+                            "default": "{developer}/{provider}/{resource}"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "default": {
+                        "resource": true,
+                        "variables": true,
+                        "outputs": true,
+                        "lookup_variables": true,
+                        "readme": true,
+                        "examples": true
+                    }
+                }
+            },
+            "details": ""
+        },
+        "ProviderFiles": {
+            "title": "Provider Files Settings",
+            "description": "Settings creating the provider level files.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "modules_tf": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "filename": {
+                            "type": "string",
+                            "default": "{resource}.modules.tf"
+                        }
+                    }
+                },
+                "variables_tf": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "filename": {
+                            "type": "string",
+                            "default": "{resource}.variables.tf"
+                        }
+                    }
+                },
+                "provider_tf": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "filename": {
+                            "type": "string",
+                            "default": "{resource}.provider.tf"
+                        }
+                    }
+                },
+                "defaults": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "variable_format": {
+                            "type": "string",
+                            "default": "module.defaults.merge[\"{resource}\"]"
+                        }
+                    }
+                }
+            }
+        },
+        "ResourceGraph": {
+            "title": "Resource Graph Settings",
+            "description": "Defines settings for dependency graph visualization.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "defaultResource": {
+                    "title": "Default Resource",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Resource shown first when graph loads.",
+                    "default": null,
+                    "example": "subscription",
+                    "details": ""
+                },
+                "enableFullDependencyScan": {
+                    "title": "Enable Full Dependency Scan",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ],
+                    "description": "If true, scans all resources for incoming references.",
+                    "default": false,
+                    "example": false,
+                    "details": ""
+                }
+            },
+            "required": []
+        },
+        "ImportSettings": {
+            "title": "Import Settings",
+            "description": "Settings for the resource import feature, enabling discovery and import of existing cloud resources into Terraform.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "portalUrl": {
+                    "title": "Provider Portal URL",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "The URL of the provider's management console or portal.",
+                    "default": null,
+                    "example": "https://portal.azure.com"
+                },
+                "importToPattern": {
+                    "title": "Import 'To' Block Pattern",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "The format pattern for the 'to' attribute in generated block. You can use '{resource}' for the resource type and '{name}' or '{key}' for the cleaned item name. Example: 'module.{resource}[\"{key}\"]'.",
+                    "default": null,
+                    "example": "module.azurerm_defaults.merge[\"{resource}\"]"
+                },
+                "startingResource": {
+                    "title": "Starting Resource",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "The root Terraform resource type to begin resource enumeration from.",
+                    "default": null,
+                    "example": "azurerm_subscription"
+                },
+                "filterHierarchy": {
+                    "title": "Filter Hierarchy",
+                    "description": "Ordered list of filterable scopes for narrowing resource discovery. Each entry defines a level in the hierarchy presented as a filter in the UI.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Display name for this filter level."
+                            },
+                            "field": {
+                                "type": "string",
+                                "description": "The API field or property this filter maps to."
+                            },
+                            "resourceType": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "description": "The Terraform resource type this filter level corresponds to."
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "field"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "default": []
+                },
+                "authOptions": {
+                    "title": "Authentication Options",
+                    "description": "Available authentication methods for this provider. Each option defines a different way to authenticate, with its own set of credential fields. Actual credential values are stored in app settings, never in the manifest.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "Unique identifier for this auth method (e.g., 'service_principal', 'access_key')."
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "Display name for this auth method (e.g., 'Service Principal', 'Access Key')."
+                            },
+                            "properties": {
+                                "type": "object",
+                                "description": "Map of credential field names to their schema for this auth method.",
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Display label for this credential field."
+                                        },
+                                        "type": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "description": "JSON schema type(s) for this field."
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Placeholder or help text for this credential field."
+                                        },
+                                        "sensitive": {
+                                            "type": "boolean",
+                                            "description": "If true, the field value is masked by default (e.g., passwords, secrets).",
+                                            "default": false
+                                        }
+                                    },
+                                    "required": [
+                                        "title",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "name",
+                            "properties"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "default": []
+                },
+                "managedByIndicator": {
+                    "title": "Managed By Indicator",
+                    "description": "How to determine if a discovered resource is already managed by Terraform.",
+                    "type": "object",
+                    "properties": {
+                        "method": {
+                            "type": "string",
+                            "enum": [
+                                "tag",
+                                "naming_convention",
+                                "custom"
+                            ],
+                            "description": "Strategy used to identify managed resources.",
+                            "default": "tag"
+                        },
+                        "tagKey": {
+                            "type": "string",
+                            "description": "When method is 'tag', the tag key to look for.",
+                            "default": "managedby"
+                        },
+                        "tagValue": {
+                            "type": "string",
+                            "description": "When method is 'tag', the expected tag value indicating Terraform management.",
+                            "default": "terraform"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "resourceIdPattern": {
+                    "title": "Resource ID Pattern",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "description": "Pattern template for constructing provider resource IDs in import blocks. Supports placeholders matching filter hierarchy fields.",
+                    "default": null,
+                    "example": "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/{resource_provider}/{resource_type}/{resource_name}"
+                }
+            }
+        }
+    },
+    "required": [
+        "Global"
+    ]
+}

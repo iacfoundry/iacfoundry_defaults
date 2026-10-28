@@ -1,0 +1,16 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "aws",
+    "version": "v6.19.0",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-aws/{version}/website/docs/r/{resource}.html.markdown",
+    "color": "#db8d1e",
+    "icon": "aws.png",
+    "github_url": "https://github.com/hashicorp/terraform-provider-aws"
+  },
+  "Module": {},
+  "ResourceGraph": {
+    "defaultResource": "vpc",
+    "enableFullDependencyScan": false
+  }
+}

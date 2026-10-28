@@ -1,0 +1,16 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "azurerm",
+    "version": "v4.51.0",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/{version}/website/docs/r/{resource}.html.markdown",
+    "color": "#4879d1",
+    "icon": "azurerm.png",
+    "github_url": "https://github.com/hashicorp/terraform-provider-azurerm"
+  },
+  "Module": {},
+  "ResourceGraph": {
+    "defaultResource": "subscription",
+    "enableFullDependencyScan": false
+  }
+}

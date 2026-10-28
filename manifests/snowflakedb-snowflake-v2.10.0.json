@@ -1,0 +1,16 @@
+{
+  "Global": {
+    "developer": "snowflakedb",
+    "provider": "snowflake",
+    "version": "v2.10.0",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/Snowflake-Labs/terraform-provider-snowflake/{version}/docs/resources/{resource}.md",
+    "color": "#76bff0",
+    "icon": "snowflake.png",
+    "github_url": "https://github.com/Snowflake-Labs/terraform-provider-snowflake"
+  },
+  "Module": {},
+  "ResourceGraph": {
+    "defaultResource": "database",
+    "enableFullDependencyScan": false
+  }
+}

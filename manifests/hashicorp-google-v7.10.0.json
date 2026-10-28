@@ -1,0 +1,16 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "google",
+    "version": "v7.10.0",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-google/{version}/website/docs/r/{resource}.html.markdown",
+    "color": "#c84436",
+    "icon": "google-cloud.svg",
+    "github_url": "https://github.com/hashicorp/terraform-provider-google"
+  },
+  "Module": {},
+  "ResourceGraph": {
+    "defaultResource": "compute_instance",
+    "enableFullDependencyScan": false
+  }
+}

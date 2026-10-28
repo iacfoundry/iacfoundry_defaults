@@ -1,0 +1,16 @@
+{
+  "Global": {
+    "developer": "databricks",
+    "provider": "databricks",
+    "version": "v1.96.0",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/databricks/terraform-provider-databricks/{version}/docs/resources/{resource}.md",
+    "color": "#d25843",
+    "icon": "databricks.svg",
+    "github_url": "https://github.com/databricks/terraform-provider-databricks"
+  },
+  "Module": {},
+  "ResourceGraph": {
+    "defaultResource": "cluster",
+    "enableFullDependencyScan": false
+  }
+}
