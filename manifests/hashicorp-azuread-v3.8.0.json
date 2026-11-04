@@ -1,0 +1,48 @@
+{
+  "Global": {
+    "developer": "hashicorp",
+    "provider": "azuread",
+    "color": "#446595",
+    "icon": "azuread.png",
+    "version": "v3.8.0",
+    "github_url": "https://github.com/hashicorp/terraform-provider-azuread",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azuread/refs/heads/{version}/docs/resources/{resource}.md"
+  },
+  "Module": {
+    "override_readme_callout": false,
+    "resource_mapping": {},
+    "output_files": {
+      "resource": true,
+      "variables": true,
+      "outputs": true,
+      "lookup_variables": true,
+      "readme": true,
+      "examples": true,
+      "modules_path": "{developer}/{provider}/{resource}"
+    }
+  },
+  "ResourceGraph": {
+    "defaultResource": "user",
+    "enableFullDependencyScan": false
+  },
+  "ProviderFiles": {
+    "provider_files_path": "{developer}/{provider}",
+    "modules_tf": {
+      "filename": "{provider}.modules.tf",
+      "enabled": true
+    },
+    "variables_tf": {
+      "filename": "{provider}.variables.tf",
+      "enabled": true
+    },
+    "provider_tf": {
+      "filename": "{provider}.provider.tf",
+      "enabled": true
+    },
+    "tests_hcl": {
+      "enabled": true,
+      "filename": "{provider}.tftest.hcl",
+      "header": "# --------------------------------------------------------------\n# Terraform Module Tests\n# Contributor(s): William Robinson\n# Created: March 2026\n# Updated: April 2026\n# Purpose: Terraform Resource Module Test Provider and run steps\n# --------------------------------------------------------------"
+    }
+  }
+}

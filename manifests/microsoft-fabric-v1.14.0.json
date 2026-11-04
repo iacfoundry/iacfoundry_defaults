@@ -1,0 +1,72 @@
+{
+  "Global": {
+    "developer": "microsoft",
+    "provider": "fabric",
+    "color": "#117865",
+    "icon": "fabric.svg",
+    "version": "v1.14.0",
+    "github_url": "https://github.com/microsoft/terraform-provider-fabric",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/microsoft/terraform-provider-fabric/refs/tags/{version}/docs/resources/{resource}.md"
+  },
+  "Module": {
+    "override_readme_callout": false,
+    "resource_mapping": {},
+    "exclude_attributes": {
+      "gateway": [
+        "min_member_gateway_count",
+        "max_member_gateway_count"
+      ]
+    },
+    "output_files": {
+      "resource": true,
+      "variables": true,
+      "outputs": true,
+      "lookup_variables": true,
+      "readme": true,
+      "examples": true,
+      "modules_path": "{developer}/{provider}/{resource}"
+    },
+    "examples": {
+      "id_format": "uuid",
+      "include": [
+        "kql_database.configuration",
+        "digital_twin_builder_flow.configuration",
+        "spark_workspace_settings.automatic_log"
+      ]
+    }
+  },
+  "ResourceGraph": {
+    "defaultResource": "workspace",
+    "enableFullDependencyScan": false
+  },
+  "ProviderFiles": {
+    "provider_files_path": "{developer}/{provider}",
+    "modules_tf": {
+      "filename": "{provider}.modules.tf",
+      "enabled": true
+    },
+    "variables_tf": {
+      "filename": "{provider}.variables.tf",
+      "enabled": true
+    },
+    "provider_tf": {
+      "filename": "{provider}.provider.tf",
+      "enabled": true
+    },
+    "tests_hcl": {
+      "enabled": true,
+      "filename": "{provider}.tftest.hcl",
+      "header": "# --------------------------------------------------------------\n# Terraform Module Tests\n# Contributor(s): William Robinson\n# Created: March 2026\n# Updated: April 2026\n# Purpose: Terraform Resource Module Test Provider and run steps\n# --------------------------------------------------------------",
+      "mock_providers": [
+        "azurerm"
+      ]
+    },
+    "providers": [
+      {
+        "alias": null,
+        "enabled": true,
+        "config": "use_oidc  = true\nclient_id = data.azurerm_client_config.current.client_id\ntenant_id = data.azurerm_client_config.current.tenant_id"
+      }
+    ]
+  }
+}

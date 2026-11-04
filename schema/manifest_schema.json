@@ -97,52 +97,6 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "resource_providers": {
-                    "title": "Resource Providers",
-                    "description": "Define which provider each resource should use. Provider can be an alias or 'all' for multi-provider resources.",
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "resource": {
-                                "type": "string",
-                                "description": "The resource name (e.g., 'cluster', 'ip_access_list')"
-                            },
-                            "provider": {
-                                "type": "string",
-                                "description": "Provider alias from ProviderFiles.providers or 'all' for both"
-                            }
-                        },
-                        "required": [
-                            "resource",
-                            "provider"
-                        ],
-                        "additionalProperties": false
-                    },
-                    "default": [],
-                    "example": [
-                        {
-                            "resource": "cluster",
-                            "provider": "workspace"
-                        },
-                        {
-                            "resource": "ip_access_list",
-                            "provider": "all"
-                        }
-                    ]
-                },
-                "include_deprecated": {
-                    "title": "Include Deprecated",
-                    "description": "If enabled (default), arguments and blocks the provider marks as deprecated are generated and labelled 'Deprecated by provider' in variables.tf. Disable to omit them, for example when moving to a new major provider version.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "override_readme_callout": {
-                    "title": "Override README Callout",
-                    "description": "If enabled, each resource README includes a section explaining how to customize the module in a hand-written {resource}.resource_override.tf file, with examples. The generator never creates or overwrites override files; all generated logic stays in the main resource file.",
-                    "type": "boolean",
-                    "default": false
-                },
                 "resource_mapping": {
                     "title": "Resource Mapping",
                     "description": "Map field names to specific resource types, optionally controlling lookup behavior.",
@@ -181,6 +135,40 @@
                         },
                         "virtual_network_subnet_ids": "azurerm_subnet"
                     }
+                },
+                "resource_providers": {
+                    "title": "Resource Providers",
+                    "description": "Define which provider each resource should use. Provider can be an alias or 'all' for multi-provider resources.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "resource": {
+                                "type": "string",
+                                "description": "The resource name (e.g., 'cluster', 'ip_access_list')"
+                            },
+                            "provider": {
+                                "type": "string",
+                                "description": "Provider alias from ProviderFiles.providers or 'all' for both"
+                            }
+                        },
+                        "required": [
+                            "resource",
+                            "provider"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "default": [],
+                    "example": [
+                        {
+                            "resource": "cluster",
+                            "provider": "workspace"
+                        },
+                        {
+                            "resource": "ip_access_list",
+                            "provider": "all"
+                        }
+                    ]
                 },
                 "output_files": {
                     "title": "Output Files",
@@ -319,8 +307,8 @@
                             ],
                             "default": true
                         },
-                        "zip_path": {
-                            "title": "Zip Hierarchy Path",
+                        "modules_path": {
+                            "title": "zip_modules_path",
                             "type": "string",
                             "description": "Template for directory structure in the valid zip file. Supports {developer}, {provider}, {resource}.",
                             "default": "{developer}/{provider}/{resource}"
@@ -335,6 +323,101 @@
                         "readme": true,
                         "examples": true
                     }
+                },
+                "include_deprecated": {
+                    "title": "Include Deprecated",
+                    "description": "If enabled (default), arguments and blocks the provider marks as deprecated are generated and labelled 'Deprecated by provider' in variables.tf. Disable to omit them, for example when moving to a new major provider version.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "override_readme_callout": {
+                    "title": "Override README Callout",
+                    "description": "If enabled, each resource README includes a section explaining how to customize the module in a hand-written {resource}.resource_override.tf file, with examples. The generator never creates or overwrites override files; all generated logic stays in the main resource file.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "enabled_flag": {
+                    "title": "Enabled Flag Name",
+                    "description": "Name of the per-entry on/off flag in each <provider>_<resource>_data map. Leave empty for 'resource_enabled'; use 'enabled' to keep a provider on the old name until its consumers' tfvars are renamed.",
+                    "type": "string",
+                    "enum": [
+                        "",
+                        "resource_enabled",
+                        "enabled"
+                    ]
+                },
+                "exclude_attributes": {
+                    "title": "Excluded Attributes",
+                    "description": "Top-level attributes left out of a resource's module, per resource: {\"gateway\": [\"min_member_gateway_count\"]}. For attributes that can't be expressed in a for_each module.",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "validations": {
+                    "title": "Variable Validations",
+                    "description": "Generate validation blocks (allowed values, ranges, UUIDs, one-of groups) in each module's variables.tf from the provider rules (public/defaults/provider-rules). Needs a rules file for the provider version.",
+                    "type": "boolean"
+                },
+                "examples": {
+                    "title": "Examples",
+                    "description": "Settings for generated examples.tfvars. Curated examples (harness/examples) always take precedence.",
+                    "type": "object",
+                    "properties": {
+                        "id_format": {
+                            "title": "ID Format",
+                            "description": "Shape of example IDs for *_id attributes: 'uuid' (e.g. Fabric) or 'arm' (Azure resource IDs).",
+                            "type": "string",
+                            "enum": [
+                                "uuid",
+                                "arm"
+                            ]
+                        },
+                        "location": {
+                            "title": "Location",
+                            "description": "Example value for location/region attributes, e.g. 'eastus'.",
+                            "type": "string"
+                        },
+                        "values": {
+                            "title": "Values",
+                            "description": "Example values by attribute name, or '<resource>.<attribute>' for one resource. JSON values, rendered as HCL.",
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "include": {
+                            "title": "Always Include",
+                            "description": "Optional attributes or blocks to always include, for rules the schema doesn't state: 'name', 'path.name' or '<resource>.<path>'.",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "use_docs": {
+                            "title": "Use Provider Docs",
+                            "description": "Read hand-written provider docs as hints for example values. Only for providers without provider rules; docs are inconsistent between resources.",
+                            "type": "boolean"
+                        },
+                        "rules": {
+                            "title": "Provider Rules Source",
+                            "description": "Go entry point for npm run provider-rules (SDKv2 providers only).",
+                            "type": "object",
+                            "properties": {
+                                "go_package": {
+                                    "title": "Go Package",
+                                    "description": "Import path of the package with the provider function, e.g. github.com/hashicorp/terraform-provider-azurerm/internal/provider.",
+                                    "type": "string"
+                                },
+                                "provider_func": {
+                                    "title": "Provider Function",
+                                    "description": "Function returning the *schema.Provider, e.g. AzureProvider.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "details": ""
@@ -345,44 +428,102 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "provider_files_path": {
+                    "title": "zip_provider_files_path",
+                    "type": "string",
+                    "description": "Template for directory structure in the valid zip file. Supports {developer}, {provider}.",
+                    "default": "{developer}/{provider}"
+                },
                 "modules_tf": {
+                    "title": "Modules Mapping File ({provider}.modules.tf)",
                     "type": "object",
                     "properties": {
                         "enabled": {
+                            "title": "Enabled",
                             "type": "boolean",
                             "default": true
                         },
                         "filename": {
+                            "title": "Filename",
                             "type": "string",
-                            "default": "{resource}.modules.tf"
+                            "default": "{provider}.modules.tf"
                         }
                     }
                 },
                 "variables_tf": {
+                    "title": "Provider Variables File ({provider}.variables.tf)",
                     "type": "object",
                     "properties": {
                         "enabled": {
+                            "title": "Enabled",
                             "type": "boolean",
                             "default": true
                         },
                         "filename": {
+                            "title": "Filename",
                             "type": "string",
-                            "default": "{resource}.variables.tf"
+                            "default": "{provider}.variables.tf"
                         }
                     }
                 },
                 "provider_tf": {
+                    "title": "Provider Config File ({provider}.provider.tf)",
                     "type": "object",
                     "properties": {
                         "enabled": {
+                            "title": "Enabled",
                             "type": "boolean",
                             "default": true
                         },
                         "filename": {
+                            "title": "Filename",
                             "type": "string",
-                            "default": "{resource}.provider.tf"
+                            "default": "{provider}.provider.tf"
                         }
                     }
+                },
+                "providers": {
+                    "title": "Provider Blocks",
+                    "description": "Optional named provider blocks that should be generated in provider.tf.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                            "alias": {
+                                "title": "Provider Alias",
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "description": "Alias name for this provider block. When set, resources can reference provider = provider.alias.",
+                                "default": null
+                            },
+                            "enabled": {
+                                "title": "Enabled",
+                                "type": "boolean",
+                                "default": true
+                            },
+                            "config": {
+                                "title": "Configuration (HCL)",
+                                "type": "string",
+                                "description": "Raw HCL configuration for this provider block (content inside the braces).",
+                                "default": ""
+                            }
+                        },
+                        "required": [
+                            "config"
+                        ]
+                    }
+                },
+                "default_provider_alias": {
+                    "title": "Default Provider Alias",
+                    "description": "If set, resources without a specific provider mapping will use this alias.",
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null
                 },
                 "defaults": {
                     "type": "object",
@@ -394,6 +535,64 @@
                         "variable_format": {
                             "type": "string",
                             "default": "module.defaults.merge[\"{resource}\"]"
+                        },
+                        "registry": {
+                            "title": "Defaults Registry",
+                            "description": "Map in a provider-level file that lists every module's data (azurerm: resource_data in defaults.modules.tf). Entries are added and removed by key as modules are generated.",
+                            "type": "object",
+                            "properties": {
+                                "file": {
+                                    "title": "File",
+                                    "description": "Provider-level file, e.g. defaults.modules.tf.",
+                                    "type": "string"
+                                },
+                                "map": {
+                                    "title": "Map",
+                                    "description": "Map attribute name, e.g. resource_data.",
+                                    "type": "string"
+                                },
+                                "entry": {
+                                    "title": "Entry Value",
+                                    "description": "Value template, e.g. var.{full_name}_data.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tests_hcl": {
+                    "title": "Test Framework (.tftest.hcl)",
+                    "description": "Settings for automated Terraform module testing.",
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "title": "Enable Tests",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "filename": {
+                            "title": "Filename Template",
+                            "type": "string",
+                            "default": "{provider}.tftest.hcl"
+                        },
+                        "header": {
+                            "title": "File Header (HCL)",
+                            "type": "string",
+                            "description": "Custom header comments for the test file.",
+                            "default": "# --------------------------------------------------------------\n# Terraform Module Tests\n# Contributor(s): William Robinson\n# Created: March 2026\n# Updated: April 2026\n# Purpose: Terraform Resource Module Test Provider and run steps\n# --------------------------------------------------------------"
+                        },
+                        "mock_providers": {
+                            "title": "Extra Mock Providers",
+                            "description": "Other providers the provider block reads from, mocked in the provider's test file (e.g. ['azurerm'] for data.azurerm_client_config).",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "root_mock": {
+                            "title": "Mock in Repo Root Test",
+                            "description": "Set to false for providers that need no credentials (random, time, tls), so the repo-root tests/terraform.tftest.hcl gets no mock for them. Leave unset to include the mock.",
+                            "type": "boolean"
                         }
                     }
                 }

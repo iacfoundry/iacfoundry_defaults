@@ -1,0 +1,687 @@
+{
+  "Global": {
+    "developer": "databricks",
+    "provider": "databricks",
+    "color": "#d25843",
+    "icon": "databricks.svg",
+    "version": "v1.115.0",
+    "github_url": "https://github.com/databricks/terraform-provider-databricks",
+    "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/databricks/terraform-provider-databricks/{version}/docs/resources/{resource}.md"
+  },
+  "Module": {
+    "override_readme_callout": false,
+    "resource_providers": [
+      {
+        "resource": "access_control_rule_set",
+        "provider": "all"
+      },
+      {
+        "resource": "account_federation_policy",
+        "provider": "account"
+      },
+      {
+        "resource": "account_network_policy",
+        "provider": "account"
+      },
+      {
+        "resource": "account_setting_user_preference_v2",
+        "provider": "account"
+      },
+      {
+        "resource": "account_setting_v2",
+        "provider": "account"
+      },
+      {
+        "resource": "aibi_dashboard_embedding_access_policy_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "aibi_dashboard_embedding_approved_domains_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "alert_v2",
+        "provider": "workspace"
+      },
+      {
+        "resource": "alert",
+        "provider": "workspace"
+      },
+      {
+        "resource": "app_space",
+        "provider": "workspace"
+      },
+      {
+        "resource": "app",
+        "provider": "workspace"
+      },
+      {
+        "resource": "apps_settings_custom_template",
+        "provider": "workspace"
+      },
+      {
+        "resource": "artifact_allowlist",
+        "provider": "workspace"
+      },
+      {
+        "resource": "automatic_cluster_update_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "budget_policy",
+        "provider": "account"
+      },
+      {
+        "resource": "budget",
+        "provider": "account"
+      },
+      {
+        "resource": "catalog_workspace_binding",
+        "provider": "workspace"
+      },
+      {
+        "resource": "catalog",
+        "provider": "workspace"
+      },
+      {
+        "resource": "cluster_policy",
+        "provider": "workspace"
+      },
+      {
+        "resource": "cluster",
+        "provider": "workspace"
+      },
+      {
+        "resource": "compliance_security_profile_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "connection",
+        "provider": "workspace"
+      },
+      {
+        "resource": "credential",
+        "provider": "workspace"
+      },
+      {
+        "resource": "custom_app_integration",
+        "provider": "account"
+      },
+      {
+        "resource": "dashboard",
+        "provider": "workspace"
+      },
+      {
+        "resource": "data_classification_catalog_config",
+        "provider": "workspace"
+      },
+      {
+        "resource": "data_quality_monitor",
+        "provider": "workspace"
+      },
+      {
+        "resource": "data_quality_refresh",
+        "provider": "workspace"
+      },
+      {
+        "resource": "database_database_catalog",
+        "provider": "workspace"
+      },
+      {
+        "resource": "database_instance",
+        "provider": "workspace"
+      },
+      {
+        "resource": "database_synced_database_table",
+        "provider": "workspace"
+      },
+      {
+        "resource": "dbfs_file",
+        "provider": "workspace"
+      },
+      {
+        "resource": "default_namespace_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "directory",
+        "provider": "workspace"
+      },
+      {
+        "resource": "disable_legacy_access_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "disable_legacy_dbfs_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "disable_legacy_features_setting",
+        "provider": "account"
+      },
+      {
+        "resource": "disaster_recovery_failover_group",
+        "provider": "workspace"
+      },
+      {
+        "resource": "disaster_recovery_stable_url",
+        "provider": "workspace"
+      },
+      {
+        "resource": "endpoint",
+        "provider": "account"
+      },
+      {
+        "resource": "enhanced_security_monitoring_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "entitlements",
+        "provider": "workspace"
+      },
+      {
+        "resource": "entity_tag_assignment",
+        "provider": "workspace"
+      },
+      {
+        "resource": "environments_default_workspace_base_environment",
+        "provider": "workspace"
+      },
+      {
+        "resource": "environments_workspace_base_environment",
+        "provider": "workspace"
+      },
+      {
+        "resource": "external_location",
+        "provider": "workspace"
+      },
+      {
+        "resource": "external_metadata",
+        "provider": "workspace"
+      },
+      {
+        "resource": "feature_engineering_feature",
+        "provider": "workspace"
+      },
+      {
+        "resource": "feature_engineering_kafka_config",
+        "provider": "workspace"
+      },
+      {
+        "resource": "feature_engineering_materialized_feature",
+        "provider": "workspace"
+      },
+      {
+        "resource": "file",
+        "provider": "workspace"
+      },
+      {
+        "resource": "git_credential",
+        "provider": "workspace"
+      },
+      {
+        "resource": "global_init_script",
+        "provider": "workspace"
+      },
+      {
+        "resource": "grant",
+        "provider": "workspace"
+      },
+      {
+        "resource": "grants",
+        "provider": "workspace"
+      },
+      {
+        "resource": "group_instance_profile",
+        "provider": "workspace"
+      },
+      {
+        "resource": "group_member",
+        "provider": "all"
+      },
+      {
+        "resource": "group_role",
+        "provider": "all"
+      },
+      {
+        "resource": "group",
+        "provider": "all"
+      },
+      {
+        "resource": "instance_pool",
+        "provider": "workspace"
+      },
+      {
+        "resource": "instance_profile",
+        "provider": "workspace"
+      },
+      {
+        "resource": "ip_access_list",
+        "provider": "workspace"
+      },
+      {
+        "resource": "job",
+        "provider": "workspace"
+      },
+      {
+        "resource": "knowledge_assistant_knowledge_source",
+        "provider": "workspace"
+      },
+      {
+        "resource": "knowledge_assistant",
+        "provider": "workspace"
+      },
+      {
+        "resource": "lakehouse_monitor",
+        "provider": "workspace"
+      },
+      {
+        "resource": "library",
+        "provider": "workspace"
+      },
+      {
+        "resource": "materialized_features_feature_tag",
+        "provider": "workspace"
+      },
+      {
+        "resource": "metastore_assignment",
+        "provider": "all"
+      },
+      {
+        "resource": "metastore_data_access",
+        "provider": "all"
+      },
+      {
+        "resource": "metastore",
+        "provider": "all"
+      },
+      {
+        "resource": "mlflow_experiment",
+        "provider": "workspace"
+      },
+      {
+        "resource": "mlflow_model",
+        "provider": "workspace"
+      },
+      {
+        "resource": "mlflow_webhook",
+        "provider": "workspace"
+      },
+      {
+        "resource": "model_serving_provisioned_throughput",
+        "provider": "workspace"
+      },
+      {
+        "resource": "model_serving",
+        "provider": "workspace"
+      },
+      {
+        "resource": "mount",
+        "provider": "workspace"
+      },
+      {
+        "resource": "mws_credentials",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_customer_managed_keys",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_log_delivery",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_ncc_binding",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_ncc_private_endpoint_rule",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_network_connectivity_config",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_networks",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_permission_assignment",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_private_access_settings",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_storage_configurations",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_vpc_endpoint",
+        "provider": "account"
+      },
+      {
+        "resource": "mws_workspaces",
+        "provider": "account"
+      },
+      {
+        "resource": "notebook",
+        "provider": "workspace"
+      },
+      {
+        "resource": "notification_destination",
+        "provider": "workspace"
+      },
+      {
+        "resource": "obo_token",
+        "provider": "workspace"
+      },
+      {
+        "resource": "online_store",
+        "provider": "workspace"
+      },
+      {
+        "resource": "online_table",
+        "provider": "workspace"
+      },
+      {
+        "resource": "permission_assignment",
+        "provider": "workspace"
+      },
+      {
+        "resource": "permissions",
+        "provider": "workspace"
+      },
+      {
+        "resource": "pipeline",
+        "provider": "workspace"
+      },
+      {
+        "resource": "policy_info",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_branch",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_catalog",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_database",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_endpoint",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_project",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_role",
+        "provider": "workspace"
+      },
+      {
+        "resource": "postgres_synced_table",
+        "provider": "workspace"
+      },
+      {
+        "resource": "provider",
+        "provider": "workspace"
+      },
+      {
+        "resource": "quality_monitor_v2",
+        "provider": "workspace"
+      },
+      {
+        "resource": "quality_monitor",
+        "provider": "workspace"
+      },
+      {
+        "resource": "query",
+        "provider": "workspace"
+      },
+      {
+        "resource": "recipient",
+        "provider": "workspace"
+      },
+      {
+        "resource": "registered_model",
+        "provider": "workspace"
+      },
+      {
+        "resource": "repo",
+        "provider": "workspace"
+      },
+      {
+        "resource": "restrict_workspace_admins_setting",
+        "provider": "workspace"
+      },
+      {
+        "resource": "rfa_access_request_destinations",
+        "provider": "workspace"
+      },
+      {
+        "resource": "schema",
+        "provider": "workspace"
+      },
+      {
+        "resource": "secret_acl",
+        "provider": "workspace"
+      },
+      {
+        "resource": "secret_scope",
+        "provider": "workspace"
+      },
+      {
+        "resource": "secret_uc",
+        "provider": "workspace"
+      },
+      {
+        "resource": "secret",
+        "provider": "workspace"
+      },
+      {
+        "resource": "service_principal_federation_policy",
+        "provider": "workspace"
+      },
+      {
+        "resource": "service_principal_role",
+        "provider": "all"
+      },
+      {
+        "resource": "service_principal_secret",
+        "provider": "workspace"
+      },
+      {
+        "resource": "service_principal",
+        "provider": "all"
+      },
+      {
+        "resource": "share",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_alert",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_dashboard",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_endpoint",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_global_config",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_permissions",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_query",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_table",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_visualization",
+        "provider": "workspace"
+      },
+      {
+        "resource": "sql_widget",
+        "provider": "workspace"
+      },
+      {
+        "resource": "storage_credential",
+        "provider": "all"
+      },
+      {
+        "resource": "supervisor_agent_tool",
+        "provider": "workspace"
+      },
+      {
+        "resource": "supervisor_agent",
+        "provider": "workspace"
+      },
+      {
+        "resource": "system_schema",
+        "provider": "workspace"
+      },
+      {
+        "resource": "tag_policy",
+        "provider": "workspace"
+      },
+      {
+        "resource": "token",
+        "provider": "workspace"
+      },
+      {
+        "resource": "user_instance_profile",
+        "provider": "workspace"
+      },
+      {
+        "resource": "user_role",
+        "provider": "all"
+      },
+      {
+        "resource": "user",
+        "provider": "all"
+      },
+      {
+        "resource": "vector_search_endpoint",
+        "provider": "workspace"
+      },
+      {
+        "resource": "vector_search_index",
+        "provider": "workspace"
+      },
+      {
+        "resource": "volume",
+        "provider": "workspace"
+      },
+      {
+        "resource": "warehouses_default_warehouse_override",
+        "provider": "workspace"
+      },
+      {
+        "resource": "workspace_binding",
+        "provider": "workspace"
+      },
+      {
+        "resource": "workspace_conf",
+        "provider": "workspace"
+      },
+      {
+        "resource": "workspace_entity_tag_assignment",
+        "provider": "workspace"
+      },
+      {
+        "resource": "workspace_file",
+        "provider": "workspace"
+      },
+      {
+        "resource": "workspace_network_option",
+        "provider": "account"
+      },
+      {
+        "resource": "workspace_setting_v2",
+        "provider": "workspace"
+      }
+    ],
+    "output_files": {
+      "resource": true,
+      "variables": true,
+      "outputs": true,
+      "lookup_variables": true,
+      "readme": true,
+      "examples": true,
+      "modules_path": "{developer}/{provider}/{resource}"
+    }
+  },
+  "ResourceGraph": {
+    "defaultResource": "cluster",
+    "enableFullDependencyScan": false
+  },
+  "ProviderFiles": {
+    "provider_files_path": "{developer}/{provider}",
+    "modules_tf": {
+      "enabled": true,
+      "filename": "{provider}.modules.tf"
+    },
+    "variables_tf": {
+      "enabled": true,
+      "filename": "{provider}.variables.tf"
+    },
+    "provider_tf": {
+      "enabled": true,
+      "filename": "{provider}.provider.tf"
+    },
+    "default_provider_alias": "account",
+    "defaults": {
+      "enabled": false,
+      "variable_format": "module.defaults.merge[\"{resource}\"]"
+    },
+    "tests_hcl": {
+      "enabled": true,
+      "filename": "{provider}.tftest.hcl",
+      "header": "# --------------------------------------------------------------\n# Terraform Module Tests\n# Contributor(s): William Robinson\n# Created: March 2026\n# Updated: April 2026\n# Purpose: Terraform Resource Module Test Provider and run steps\n# --------------------------------------------------------------"
+    },
+    "providers": [
+      {
+        "alias": null,
+        "enabled": true,
+        "config": "host            = \"https://accounts.azuredatabricks.net\"\nauth_type       = \"github-oidc-azure\"\naccount_id      = var.databricks_account_id\nazure_client_id = data.azurerm_client_config.current.client_id\nazure_tenant_id = data.azurerm_client_config.current.tenant_id"
+      },
+      {
+        "alias": "workspace",
+        "enabled": true,
+        "config": "auth_type       = \"github-oidc-azure\"\nhost            = var.databricks_workspace\nazure_client_id = data.azurerm_client_config.current.client_id\nazure_tenant_id = data.azurerm_client_config.current.tenant_id"
+      }
+    ]
+  },
+  "ImportSettings": {
+    "portalUrl": null,
+    "importToPattern": null,
+    "startingResource": null,
+    "filterHierarchy": [],
+    "authOptions": [],
+    "managedByIndicator": {
+      "method": "tag",
+      "tagKey": "managedby",
+      "tagValue": "terraform"
+    },
+    "resourceIdPattern": null
+  }
+}

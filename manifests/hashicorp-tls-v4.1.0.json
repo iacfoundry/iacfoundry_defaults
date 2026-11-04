@@ -8,7 +8,30 @@
     "icon": "hashicorp.png",
     "github_url": "https://github.com/hashicorp/terraform-provider-tls"
   },
-  "Module": {},
+  "Module": {
+    "override_readme_callout": false
+  },
+  "ProviderFiles": {
+    "provider_files_path": "{developer}/{provider}",
+    "modules_tf": {
+      "filename": "{provider}.modules.tf",
+      "enabled": true
+    },
+    "variables_tf": {
+      "filename": "{provider}.variables.tf",
+      "enabled": true
+    },
+    "provider_tf": {
+      "filename": "{provider}.provider.tf",
+      "enabled": true
+    },
+    "tests_hcl": {
+      "enabled": true,
+      "filename": "{provider}.tftest.hcl",
+      "header": "# --------------------------------------------------------------\n# Terraform Module Tests\n# Contributor(s): William Robinson\n# Created: March 2026\n# Updated: April 2026\n# Purpose: Terraform Resource Module Test Provider and run steps\n# --------------------------------------------------------------",
+      "root_mock": false
+    }
+  },
   "ResourceGraph": {
     "defaultResource": "private_key",
     "enableFullDependencyScan": false

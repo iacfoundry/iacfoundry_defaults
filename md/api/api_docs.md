@@ -236,6 +236,51 @@ To expose these API capabilities as tools within an MCP ecosystem, use the follo
 }
 ```
 
+### Naming Scheme Generator
+
+#### `GET /api/naming-schema`
+Retrieves the naming scheme data for a given provider.
+
+**Query Parameters:** `?developer=hashicorp&provider=azurerm`
+
+**Response:** JSON object containing `definitions`, `schemes`, `policies`, and `globalPolicy`.
+
+#### `POST /api/naming-schema`
+Saves naming scheme data for a provider to the local filesystem.
+
+**Request Body:**
+```json
+{
+  "developer": "hashicorp",
+  "provider": "azurerm",
+  "definitions": [ ... ],
+  "schemes": { "azurerm_storage_account": { ... } },
+  "policies": { "azurerm_storage_account": { ... } },
+  "globalPolicy": { ... }
+}
+```
+**Response:** JSON indicating success and the path where the file was saved:
+`public/defaults/naming/[developer]/[provider].json`
+
+#### `POST /api/naming-schema/ai`
+Uses the configured AI provider to generate or audit a naming scheme.
+
+**Request Body:**
+```json
+{
+  "action": "generate",  // or "audit"
+  "prompt": "Include project prefix, environment, and resource code separated by hyphens",
+  "developer": "hashicorp",
+  "provider": "azurerm",
+  "resource": "azurerm_storage_account",
+  "aiSettings": { ... }
+}
+```
+**Response (generate):** JSON object containing `components`, `separator`, and `explanation`.
+**Response (audit):** JSON object containing `markdown` audit report.
+
+---
+
 ### Standalone Server Implementation
 
 A dedicated MCP server implementation is included in the `mcp-server` directory of this project. It is pre-configured to proxy requests to the IaC Foundry API.

@@ -1,7 +1,6 @@
 # --------------------------------------------------------------
 # Terraform Module Tests
 # Contributor(s): {developer}
-# Created: {date}
 # Purpose: Terraform Resource Module Test Provider and run steps
 # --------------------------------------------------------------
 
