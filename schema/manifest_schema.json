@@ -97,9 +97,32 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+                "secrets": {
+                    "title": "Generated Secrets",
+                    "description": "Admin credentials generated and stored in Key Vault by default (admin_password, administrator_password, ...). Per managed argument X the module gets X_generate (default on), X_secret_name and X_version, plus secret_key_vault_id / secret_key_vault_name. Uses write-only arguments and ephemeral random_password when the provider has them. Lookup exceptions add or opt out arguments with secret.",
+                    "type": "object",
+                    "properties": {
+                        "enabled": { "type": "boolean", "default": false },
+                        "key_vault": { "type": "string", "description": "Resource type of the vault lookup.", "default": "azurerm_key_vault" },
+                        "secret_resource": { "type": "string", "default": "azurerm_key_vault_secret" },
+                        "read": { "type": "string", "enum": ["data", "ephemeral"], "default": "data", "description": "How an existing secret is read when <arg>_generate = false: data (value in state; works with mock tests) or ephemeral (write-only arguments only, never in state; Terraform mocks do not support it yet)." },
+                        "password": {
+                            "type": "object",
+                            "properties": { "length": { "type": "integer", "default": 24 }, "special": { "type": "boolean", "default": true } },
+                            "additionalProperties": false
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "lookup_exceptions": {
+                    "title": "Lookup Exceptions File",
+                    "description": "File name of this provider version's lookup exceptions, read from defaults/exceptions (bundled) and, in cloud mode, from paths.exceptions in the settings repo. Its lookups merge into resource_mapping (inline entries win). Default: <developer>-<provider>-<version>.json.",
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9._-]+[.]json$"
+                },
                 "resource_mapping": {
                     "title": "Resource Mapping",
-                    "description": "Map field names to specific resource types, optionally controlling lookup behavior.",
+                    "description": "Inline lookups, layered over the lookup exceptions file: \"<argument>\" for every resource, \"<resource_type>.<argument>\" for one.",
                     "type": "object",
                     "additionalProperties": {
                         "oneOf": [
@@ -118,6 +141,28 @@
                                         "type": "boolean",
                                         "description": "Whether to generate a lookup variable resolution for this field.",
                                         "default": true
+                                    },
+                                    "attribute": {
+                                        "type": "string",
+                                        "description": "Attribute read from the <resource>_output lookup instead of id, for an *_id argument that isn't the target's id.",
+                                        "default": "id"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "description": "Why this mapping exists. Not used by the generator."
+                                    },
+                                    "format": {
+                                        "type": "string",
+                                        "description": "format() string with one %s wrapped around the looked-up value, e.g. /subscriptions/%s around a subscription GUID."
+                                    },
+                                    "by": {
+                                        "type": "string",
+                                        "enum": ["name", "key"],
+                                        "description": "Match the alias against the target's names (<base>_name) or its module map keys (<base>_key). Default: key for targets with no name attribute."
+                                    },
+                                    "path": {
+                                        "type": "string",
+                                        "description": "Nested block the entry is limited to, e.g. custom_parameters. Only used in lookup exceptions files."
                                     }
                                 },
                                 "required": [
@@ -338,8 +383,9 @@
                 },
                 "enabled_flag": {
                     "title": "Enabled Flag Name",
-                    "description": "Name of the per-entry on/off flag in each <provider>_<resource>_data map. Leave empty for 'resource_enabled'; use 'enabled' to keep a provider on the old name until its consumers' tfvars are renamed.",
+                    "description": "Name of the per-entry on/off flag in each <provider>_<resource>_data map: 'resource_enabled' (the default; empty means the same). Use 'enabled' to keep a provider on the old name until its consumers' tfvars are renamed.",
                     "type": "string",
+                    "default": "resource_enabled",
                     "enum": [
                         "",
                         "resource_enabled",
@@ -535,6 +581,38 @@
                         "variable_format": {
                             "type": "string",
                             "default": "module.defaults.merge[\"{resource}\"]"
+                        },
+                        "module_path": {
+                            "title": "Defaults Module Path",
+                            "description": "Folder of the generated defaults module, under the provider files path. Default: _defaults.",
+                            "type": "string"
+                        },
+                        "root_variables_file": {
+                            "title": "Root Variables File",
+                            "description": "Optional provider-level file the generator writes with the <provider>_global_defaults and <provider>_environment_defaults variables. Leave unset when that file holds other variables.",
+                            "type": "string"
+                        },
+                        "attributes": {
+                            "title": "Default Attributes",
+                            "description": "Attributes the generated defaults module fills in. Resource types take an attribute when they have a configurable top-level argument of that name (or, for <x>_name, an <x>_id looked up by name). Required arguments with a coalesce default become optional in module variables.",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object",
+                                "properties": {
+                                    "strategy": {
+                                        "type": "string",
+                                        "enum": ["merge", "coalesce"],
+                                        "description": "merge: the entry's map over environment over global. coalesce: the entry's value, else environment, else global."
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "HCL type for the defaults variables. Default: the schema's most common type for the attribute."
+                                    },
+                                    "description": { "type": "string" }
+                                },
+                                "required": ["strategy"],
+                                "additionalProperties": false
+                            }
                         },
                         "registry": {
                             "title": "Defaults Registry",

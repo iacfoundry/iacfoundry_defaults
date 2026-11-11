@@ -26,6 +26,65 @@ Generates Terraform modules based on a provided manifest and resource selection.
 ```
 **Response:** Returns a `.zip` file of generated modules (or JSON if debug=true).
 
+#### `POST /api/generate/required-providers`
+Builds `terraform.required_providers.tf` for the providers in use. Same core as the CLI's `--required-providers` and
+the MCP tool `generate_required_providers`.
+
+**Request Body:**
+```json
+{
+  "providers": [
+    "hashicorp/azurerm@v4.81.0",                                 // version -> "~>4.0"
+    "microsoft/fabric@~>1.14",                                   // explicit constraint
+    "hashicorp/azuread",                                         // latest manifest's version
+    { "source": "databricks/databricks", "version": "v1.115.0", "name": "databricks" }
+  ],
+  "existing": "terraform { required_providers { ... } }",       // (Optional) current file, merged
+  "mode": "merge"                                                // (Optional) "merge" (default) or "replace"
+}
+```
+**Response:**
+```json
+{
+  "path": "terraform.required_providers.tf",
+  "content": "terraform {\n  required_providers {\n ...",
+  "providers": [{ "name": "azurerm", "source": "hashicorp/azurerm", "constraint": "~>4.0" }],
+  "warnings": []
+}
+```
+Merging replaces listed providers by local name, keeps other entries, and never lowers a constraint unless one is
+given explicitly.
+
+#### `POST /api/generate/provider-files`
+Rebuilds a provider's shared files from the modules a repo actually has: `<provider>.modules.tf`,
+`<provider>.variables.tf`, tests, the defaults module, `<resource>.module.tf` and the defaults registry. No module
+is generated. Same core as the CLI's `--provider-files` and the MCP tool `generate_provider_files`.
+
+**Request Body:**
+```json
+{
+  "manifest": { ... },          // Provider manifest (or developer/provider/version + cloudSettings)
+  "files": [                    // The repo's .tf files, repo-relative: module folders and existing shared files
+    { "path": "hashicorp/azurerm/key_vault/key_vault.variables.tf", "content": "..." }
+  ],
+  "modules": ["storage_account"],  // (Optional) In use but not in `files` yet: wired, not generated
+  "cloudSettings": { ... }      // (Optional) Settings repo lookup exceptions in cloud mode
+}
+```
+**Response:**
+```json
+{
+  "files": [{ "path": "hashicorp/azurerm/azurerm.modules.tf", "content": "...", "status": "changed" }],
+  "inventory": [{ "resource": "key_vault", "source": "repo", "dependencies": ["azuread_group_output"], ... }],
+  "skipped": [{ "folder": "hashicorp/azurerm/key_vault_secret_random", "reason": "no azurerm_key_vault_secret_random_data variable (custom or composite module)" }],
+  "presentModules": ["azuread_group", "azurerm_key_vault", ...],
+  "warnings": []
+}
+```
+`status` is `added`, `changed` or `unchanged` against the files sent. Each module is wired from its own files
+(its `*_output` variables and `*_output_names` output); existing shared files are merged by block, so
+hand-written blocks are kept.
+
 ### Provider Intelligence
 
 #### `POST /api/provider-graph`
@@ -141,6 +200,34 @@ To expose these API capabilities as tools within an MCP ecosystem, use the follo
           "aiSettings": { "type": "object", "description": "AI configuration" }
         },
         "required": ["manifest", "resources"]
+      }
+    },
+    {
+      "name": "generate_required_providers",
+      "description": "Build terraform.required_providers.tf for the providers in use, merged with a local repo's file.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "providers": { "type": "array", "items": { "type": "string" }, "description": "e.g. [\"hashicorp/azurerm@v4.81.0\"]" },
+          "repoDir": { "type": "string", "description": "Optional local repo checkout whose file is merged" },
+          "mode": { "type": "string", "enum": ["merge", "replace"] },
+          "write": { "type": "boolean", "description": "Write the file into repoDir" }
+        },
+        "required": ["providers"]
+      }
+    },
+    {
+      "name": "generate_provider_files",
+      "description": "Rebuild a provider's shared files from the modules a local repo already has (no module folder is changed).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "manifest": { "type": "object", "description": "The provider manifest" },
+          "repoDir": { "type": "string", "description": "Absolute path of the local module repo checkout" },
+          "modules": { "type": "array", "items": { "type": "string" }, "description": "In use but not in the repo yet" },
+          "write": { "type": "boolean", "description": "Write the added and changed files into repoDir" }
+        },
+        "required": ["manifest", "repoDir"]
       }
     },
     {

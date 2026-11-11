@@ -1,0 +1,148 @@
+{
+  "developer": "hashicorp",
+  "provider": "azuread",
+  "version": "v3.8.0",
+  "description": "Lookup exceptions: corrections to the generator's *_id -> <resource>_output lookups for this provider version. lookups is keyed by resource type (\"*\" = every resource), then argument. An entry states only what differs and inherits the \"*\" entry, which inherits the default (suffix-matched resource, read id, matched by name). Fields: resource, attribute (read instead of id), format (one %s, e.g. /subscriptions/%s), by (\"name\" or \"key\"), lookup (false = plain input), path (nested block, e.g. custom_parameters; only when the entry is limited to that block), note. Merged: this file -> settings repo copy -> manifest Module.resource_mapping.",
+  "lookups": {
+    "azuread_app_role_assignment": {
+      "principal_object_id": {
+        "targets": [
+          {
+            "resource": "azuread_service_principal",
+            "attribute": "object_id",
+            "alias": "principal_name"
+          }
+        ],
+        "note": "The principal (a service principal) by name: the suffix match finds no azuread_principal_object."
+      }
+    },
+    "azuread_application_api_access": {
+      "application_id": {
+        "targets": [
+          {
+            "resource": "azuread_application_registration",
+            "attribute": "id",
+            "alias": "application_name"
+          }
+        ],
+        "note": "Application registration by name (the suffix match picks azuread_application; this repo registers with azuread_application_registration)."
+      }
+    },
+    "azuread_application_password": {
+      "application_id": {
+        "targets": [
+          {
+            "resource": "azuread_application_registration",
+            "attribute": "id",
+            "alias": "application_name"
+          },
+          {
+            "resource": "azuread_application",
+            "attribute": "id",
+            "alias": "application_name"
+          }
+        ],
+        "note": "Application registration, else application, by name."
+      }
+    },
+    "azuread_group_member": {
+      "group_object_id": {
+        "targets": [
+          {
+            "resource": "azuread_group",
+            "attribute": "object_id",
+            "alias": "group_name",
+            "data_source": {
+              "type": "azuread_group",
+              "arguments": {
+                "display_name": "group_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_group",
+              "enabled_default": false
+            }
+          }
+        ],
+        "note": "Group in the state by name, else an Azure AD lookup when existing_group = true (off by default)."
+      },
+      "member_object_id": {
+        "targets": [
+          {
+            "resource": "azuread_user",
+            "attribute": "object_id",
+            "alias": "member_user_name",
+            "data_source": {
+              "type": "azuread_user",
+              "arguments": {
+                "user_principal_name": "member_user_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal",
+              "enabled_default": false
+            }
+          },
+          {
+            "resource": "azuread_group",
+            "attribute": "object_id",
+            "alias": "member_group_name",
+            "data_source": {
+              "type": "azuread_group",
+              "arguments": {
+                "display_name": "member_group_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal",
+              "enabled_default": false
+            }
+          },
+          {
+            "resource": "azuread_service_principal",
+            "attribute": "object_id",
+            "alias": "member_service_principal_name",
+            "data_source": {
+              "type": "azuread_service_principal",
+              "arguments": {
+                "display_name": "member_service_principal_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal",
+              "enabled_default": false
+            }
+          },
+          {
+            "resource": "azurerm_user_assigned_identity",
+            "attribute": "principal_id",
+            "alias": "member_user_assigned_identity_name",
+            "data_source": {
+              "type": "azuread_service_principal",
+              "arguments": {
+                "display_name": "member_user_assigned_identity_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal",
+              "enabled_default": false
+            }
+          }
+        ],
+        "note": "Member from a user, group, service principal or user-assigned identity in the state, else Azure AD lookups when existing_principal = true (off by default). A managed identity is found in Azure AD as a service principal with its name."
+      }
+    },
+    "azuread_service_principal": {
+      "client_id": {
+        "targets": [
+          {
+            "resource": "azuread_application_registration",
+            "attribute": "client_id",
+            "alias": "app_registration_name"
+          },
+          {
+            "resource": "azuread_application",
+            "attribute": "client_id",
+            "alias": "app_registration_name"
+          }
+        ],
+        "note": "The application's client ID, from an application registration or application in the state."
+      }
+    }
+  }
+}

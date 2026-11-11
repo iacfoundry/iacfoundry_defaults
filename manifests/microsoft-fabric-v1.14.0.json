@@ -9,6 +9,8 @@
     "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/microsoft/terraform-provider-fabric/refs/tags/{version}/docs/resources/{resource}.md"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "microsoft-fabric-v1.14.0.json",
     "override_readme_callout": false,
     "resource_mapping": {},
     "exclude_attributes": {

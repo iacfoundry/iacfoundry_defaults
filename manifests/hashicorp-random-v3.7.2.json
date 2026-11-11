@@ -9,6 +9,11 @@
     "github_url": "https://github.com/hashicorp/terraform-provider-random"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "output_files": {
+      "modules_path": "{developer}/{provider}/{resource}"
+    },
+    "lookup_exceptions": "hashicorp-random-v3.7.2.json",
     "override_readme_callout": false
   },
   "ProviderFiles": {

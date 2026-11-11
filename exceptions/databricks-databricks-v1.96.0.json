@@ -1,0 +1,15 @@
+{
+  "developer": "databricks",
+  "provider": "databricks",
+  "version": "v1.96.0",
+  "description": "Lookup exceptions: corrections to the generator's *_id -> <resource>_output lookups for this provider version. lookups is keyed by resource type (\"*\" = every resource), then argument. An entry states only what differs and inherits the \"*\" entry, which inherits the default (suffix-matched resource, read id, matched by name). Fields: resource, attribute (read instead of id), format (one %s, e.g. /subscriptions/%s), by (\"name\" or \"key\"), lookup (false = plain input), path (nested block, e.g. custom_parameters; only when the entry is limited to that block), note. Merged: this file -> settings repo copy -> manifest Module.resource_mapping.",
+  "lookups": {
+    "databricks_group_instance_profile": {
+      "group_id": {
+        "resource": "databricks_group",
+        "attribute": "id",
+        "note": "Example (benign): restates the generator's default match, so output is unchanged. Copy this shape for a real exception."
+      }
+    }
+  }
+}

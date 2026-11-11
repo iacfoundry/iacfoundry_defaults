@@ -9,6 +9,8 @@
     "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azuread/refs/heads/{version}/docs/resources/{resource}.md"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "hashicorp-azuread-v3.8.0.json",
     "override_readme_callout": false,
     "resource_mapping": {},
     "output_files": {

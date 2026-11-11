@@ -9,6 +9,13 @@
     "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/{version}/website/docs/r/{resource}.html.markdown"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "secrets": {
+      "enabled": true,
+      "key_vault": "azurerm_key_vault",
+      "password": { "length": 24, "special": true }
+    },
+    "lookup_exceptions": "hashicorp-azurerm-v4.60.0.json",
     "resource_mapping": {
       "resource_group_name": {
         "resource": "azurerm_resource_group",

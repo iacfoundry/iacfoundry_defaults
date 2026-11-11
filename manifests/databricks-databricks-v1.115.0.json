@@ -9,6 +9,8 @@
     "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/databricks/terraform-provider-databricks/{version}/docs/resources/{resource}.md"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "databricks-databricks-v1.115.0.json",
     "override_readme_callout": false,
     "resource_providers": [
       {

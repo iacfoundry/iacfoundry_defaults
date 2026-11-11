@@ -1,0 +1,14 @@
+{
+  "developer": "hashicorp",
+  "provider": "google",
+  "version": "v7.10.0",
+  "description": "Lookup exceptions: corrections to the generator's *_id -> <resource>_output lookups for this provider version. lookups is keyed by resource type (\"*\" = every resource), then argument. An entry states only what differs and inherits the \"*\" entry, which inherits the default (suffix-matched resource, read id, matched by name). Fields: resource, attribute (read instead of id), format (one %s, e.g. /subscriptions/%s), by (\"name\" or \"key\"), lookup (false = plain input), path (nested block, e.g. custom_parameters; only when the entry is limited to that block), note. Merged: this file -> settings repo copy -> manifest Module.resource_mapping.",
+  "lookups": {
+    "google_project_iam_member": {
+      "project": {
+        "lookup": false,
+        "note": "Example (benign): this argument has no lookup by default, so output is unchanged. Copy this shape for a real exception."
+      }
+    }
+  }
+}

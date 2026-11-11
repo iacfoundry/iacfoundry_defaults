@@ -8,7 +8,10 @@
     "icon": "azuread.png",
     "github_url": "https://github.com/hashicorp/terraform-provider-azuread"
   },
-  "Module": {},
+  "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "hashicorp-azuread-v3.6.0.json"
+  },
   "ResourceGraph": {
     "defaultResource": "user",
     "enableFullDependencyScan": null

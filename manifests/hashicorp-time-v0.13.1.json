@@ -9,6 +9,8 @@
     "github_url": "https://github.com/hashicorp/terraform-provider-time"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "hashicorp-time-v0.13.1.json",
     "override_readme_callout": false
   },
   "ProviderFiles": {

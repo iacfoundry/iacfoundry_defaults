@@ -9,6 +9,13 @@
     "rawMarkdownUrlPattern": "https://raw.githubusercontent.com/hashicorp/terraform-provider-azurerm/{version}/website/docs/r/{resource}.html.markdown"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "secrets": {
+      "enabled": true,
+      "key_vault": "azurerm_key_vault",
+      "password": { "length": 24, "special": true }
+    },
+    "lookup_exceptions": "hashicorp-azurerm-v5.12.0.json",
     "override_readme_callout": true,
     "resource_mapping": {
       "resource_group_name": {
@@ -31,7 +38,6 @@
       "examples": true,
       "modules_path": "{developer}/{provider}/{resource}"
     },
-    "enabled_flag": "enabled",
     "examples": {
       "id_format": "arm",
       "location": "eastus",
@@ -59,6 +65,12 @@
     "defaults": {
       "variable_format": "module.azurerm_defaults.merge[\"{resource}\"]",
       "enabled": true,
+      "module_path": "_defaults",
+      "attributes": {
+        "secret_key_vault_name": { "strategy": "coalesce" },
+        "location": { "strategy": "coalesce" },
+        "tags": { "strategy": "merge" }
+      },
       "registry": {
         "file": "defaults.modules.tf",
         "map": "resource_data",
@@ -123,33 +135,95 @@
             ],
             "description": "Client secret for the Service Principal.",
             "sensitive": true
+          },
+          "subscriptions": {
+            "title": "Subscriptions",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Subscription IDs to scan, separated by commas; leave empty for every subscription the identity can read.",
+            "sensitive": false
           }
         }
       },
       {
-        "id": "device_code",
-        "name": "Device Code",
+        "id": "azure_cli",
+        "name": "Azure CLI (az login on the IaC Foundry host)",
         "properties": {
           "tenant_id": {
             "title": "Tenant ID",
             "type": [
               "string"
             ],
-            "description": "Azure AD Tenant (Directory) ID.",
+            "description": "Optional. Tenant to get the token for; leave empty for the az default.",
+            "sensitive": false
+          },
+          "subscriptions": {
+            "title": "Subscriptions",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Subscription IDs to scan, separated by commas; leave empty for every subscription the identity can read.",
+            "sensitive": false
+          }
+        }
+      },
+      {
+        "id": "device_code",
+        "name": "Device Code (sign in on any device)",
+        "properties": {
+          "tenant_id": {
+            "title": "Tenant ID",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Tenant (directory) ID or domain; leave empty for your home tenant. Needed for guest access to another tenant.",
+            "sensitive": false
+          },
+          "client_id": {
+            "title": "Client ID",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Application (client) ID of your own public client app registration; leave empty to use the Azure CLI app.",
+            "sensitive": false
+          },
+          "subscriptions": {
+            "title": "Subscriptions",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Subscription IDs to scan, separated by commas; leave empty for every subscription the identity can read.",
             "sensitive": false
           }
         }
       },
       {
         "id": "interactive",
-        "name": "Interactive Login",
+        "name": "Interactive Login (browser pop-up)",
         "properties": {
           "tenant_id": {
             "title": "Tenant ID",
             "type": [
               "string"
             ],
-            "description": "Azure AD Tenant (Directory) ID.",
+            "description": "Optional. Tenant (directory) ID or domain; leave empty for your home tenant. Needed for guest access to another tenant.",
+            "sensitive": false
+          },
+          "client_id": {
+            "title": "Client ID",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Application (client) ID of your own public client app registration; leave empty to use the Azure CLI app.",
+            "sensitive": false
+          },
+          "subscriptions": {
+            "title": "Subscriptions",
+            "type": [
+              "string"
+            ],
+            "description": "Optional. Subscription IDs to scan, separated by commas; leave empty for every subscription the identity can read.",
             "sensitive": false
           }
         }
