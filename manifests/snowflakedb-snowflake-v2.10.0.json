@@ -9,6 +9,8 @@
     "github_url": "https://github.com/Snowflake-Labs/terraform-provider-snowflake"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "snowflakedb-snowflake-v2.10.0.json",
     "override_readme_callout": false
   },
   "ProviderFiles": {

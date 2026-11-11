@@ -8,7 +8,15 @@
     "icon": "azurerm.png",
     "github_url": "https://github.com/hashicorp/terraform-provider-azurerm"
   },
-  "Module": {},
+  "Module": {
+    "enabled_flag": "resource_enabled",
+    "secrets": {
+      "enabled": true,
+      "key_vault": "azurerm_key_vault",
+      "password": { "length": 24, "special": true }
+    },
+    "lookup_exceptions": "hashicorp-azurerm-v4.51.0.json"
+  },
   "ResourceGraph": {
     "defaultResource": "subscription",
     "enableFullDependencyScan": false

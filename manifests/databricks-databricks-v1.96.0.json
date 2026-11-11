@@ -8,7 +8,10 @@
     "icon": "databricks.svg",
     "github_url": "https://github.com/databricks/terraform-provider-databricks"
   },
-  "Module": {},
+  "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "databricks-databricks-v1.96.0.json"
+  },
   "ResourceGraph": {
     "defaultResource": "cluster",
     "enableFullDependencyScan": false

@@ -1,0 +1,485 @@
+{
+  "developer": "hashicorp",
+  "provider": "azurerm",
+  "version": "v4.60.0",
+  "description": "Lookup exceptions: corrections to the generator's *_id -> <resource>_output lookups for this provider version. lookups is keyed by resource type (\"*\" = every resource), then argument. An entry states only what differs and inherits the \"*\" entry, which inherits the default (suffix-matched resource, read id, matched by name). Fields: resource, attribute (read instead of id), format (one %s, e.g. /subscriptions/%s), by (\"name\" or \"key\"), lookup (false = plain input), path (nested block, e.g. custom_parameters; only when the entry is limited to that block), note. Merged: this file -> settings repo copy -> manifest Module.resource_mapping.",
+  "lookups": {
+    "*": {
+      "identity_ids": {
+        "resource": "azurerm_user_assigned_identity",
+        "note": "identity.identity_ids is always user-assigned identity IDs: looked up by identity_names."
+      },
+      "role_definition_id": {
+        "resource": "azurerm_role_definition",
+        "attribute": "role_definition_resource_id",
+        "note": "Role assignment-style arguments want the role definition's full resource ID. azurerm_role_definition.id is '<resource id>|<scope>', which is rejected; role_definition_resource_id is the ARM ID. Applies to pim_active/pim_eligible_role_assignment and role_management_policy (no validator on these; per provider docs)."
+      },
+      "subscription_id": {
+        "resource": "azurerm_subscription",
+        "attribute": "subscription_id",
+        "note": "Most subscription_id arguments are a bare UUID (validator): automation_connection_*, iothub_endpoint_*, sentinel_data_connector_*, data_share_dataset_blob_storage, monitor_action_group, *_connection authentication (no validator). azurerm_subscription.id is the alias path, not the subscription."
+      }
+    },
+    "azurerm_api_management": {
+      "key_vault_certificate_id": {
+        "resource": "azurerm_key_vault_certificate",
+        "attribute": "versionless_secret_id",
+        "note": "hostname_configuration wants the certificate's secret ID (versionless so rotations apply), not the certificate's .id."
+      },
+      "key_vault_id": {
+        "lookup": false,
+        "note": "Deprecated alias of key_vault_certificate_id (a secret ID, not a vault ID): use key_vault_certificate_id / key_vault_certificate_name."
+      }
+    },
+    "azurerm_api_management_custom_domain": {
+      "key_vault_certificate_id": {
+        "resource": "azurerm_key_vault_certificate",
+        "attribute": "versionless_secret_id",
+        "note": "Wants the certificate's secret ID (versionless so rotations apply)."
+      },
+      "key_vault_id": {
+        "lookup": false,
+        "note": "Deprecated alias of key_vault_certificate_id (a secret ID, not a vault ID)."
+      },
+      "ssl_keyvault_identity_client_id": {
+        "targets": [
+          {
+            "resource": "azurerm_user_assigned_identity",
+            "attribute": "client_id",
+            "alias": "ssl_keyvault_identity_client_name"
+          },
+          {
+            "resource": "azuread_service_principal",
+            "attribute": "client_id",
+            "alias": "ssl_keyvault_identity_client_name"
+          }
+        ],
+        "note": "Client ID of the identity that reads the certificate: a user-assigned identity, else a service principal, by name."
+      }
+    },
+    "azurerm_api_management_logger": {
+      "connection_string": {
+        "path": "application_insights",
+        "targets": [
+          {
+            "resource": "azurerm_application_insights",
+            "attribute": "connection_string",
+            "alias": "connection_name"
+          }
+        ],
+        "note": "application_insights block only (the eventhub block's connection_string is the Event Hub's)."
+      },
+      "instrumentation_key": {
+        "path": "application_insights",
+        "targets": [
+          {
+            "resource": "azurerm_application_insights",
+            "attribute": "instrumentation_key",
+            "alias": "instrumentation_name"
+          }
+        ],
+        "note": "Application Insights instrumentation key by name."
+      },
+      "resource_id": {
+        "targets": [
+          {
+            "resource": "azurerm_api_management",
+            "attribute": "id",
+            "alias": "resource_name"
+          }
+        ],
+        "note": "The logger's target resource (an API Management instance) by name."
+      },
+      "user_assigned_identity_client_id": {
+        "path": "eventhub",
+        "targets": [
+          {
+            "resource": "azurerm_user_assigned_identity",
+            "attribute": "client_id",
+            "alias": "user_assigned_identity_client_name"
+          }
+        ],
+        "note": "Client ID of the identity (the live module read .id, which isn't a client ID)."
+      }
+    },
+    "azurerm_api_management_subscription": {
+      "subscription_id": {
+        "lookup": false,
+        "note": "The identifier of the API Management subscription being created (validator: alphanumeric, up to 80), not a reference."
+      }
+    },
+    "azurerm_application_insights": {
+      "workspace_id": {
+        "resource": "azurerm_log_analytics_workspace",
+        "note": "Workspace-based Application Insights: the suffix match finds no azurerm_workspace."
+      }
+    },
+    "azurerm_automation_connection_classic_certificate": {
+      "subscription_id": {
+        "note": "Not an exception, recorded so it isn't 'fixed': the resource's own required subscription_name doubles as the lookup key, which is correct since it is the subscription's name."
+      }
+    },
+    "azurerm_consumption_budget_subscription": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_cosmosdb_sql_role_assignment": {
+      "role_definition_id": {
+        "resource": "azurerm_cosmosdb_sql_role_definition",
+        "attribute": "id",
+        "note": "Wants a Cosmos DB SqlRoleDefinition ID (validator), not an Azure RBAC role definition: the suffix match picked azurerm_role_definition."
+      }
+    },
+    "azurerm_cosmosdb_sql_role_definition": {
+      "role_definition_id": {
+        "lookup": false,
+        "note": "The GUID of the definition being created (validator: UUID), not a reference."
+      }
+    },
+    "azurerm_cost_anomaly_alert": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_databricks_workspace": {
+      "access_connector_id": {
+        "resource": "azurerm_databricks_access_connector",
+        "note": "Provider names the argument access_connector_id but it means a Databricks access connector; the suffix match finds no azurerm_access_connector."
+      },
+      "load_balancer_backend_address_pool_id": {
+        "resource": "azurerm_lb_backend_address_pool",
+        "note": "The target resource is named lb_ (azurerm_lb_backend_address_pool), not load_balancer_, so the suffix match misses it."
+      },
+      "private_subnet_network_security_group_association_id": {
+        "by": "key",
+        "path": "custom_parameters",
+        "note": "Not an exception, recorded so it isn't 'fixed': the NSG association has no name attribute, so these are looked up by the association module's map key (custom_parameters.<public|private>_subnet_network_security_group_association_key) and the root wires module.azurerm_subnet_network_security_group_association.azurerm_subnet_network_security_group_association_output."
+      },
+      "public_subnet_network_security_group_association_id": {
+        "by": "key",
+        "path": "custom_parameters",
+        "note": "Not an exception, recorded so it isn't 'fixed': the NSG association has no name attribute, so these are looked up by the association module's map key (custom_parameters.<public|private>_subnet_network_security_group_association_key) and the root wires module.azurerm_subnet_network_security_group_association.azurerm_subnet_network_security_group_association_output."
+      }
+    },
+    "azurerm_key_vault_access_policy": {
+      "object_id": {
+        "targets": [
+          {
+            "resource": "azuread_service_principal",
+            "attribute": "object_id",
+            "alias": "principal_name",
+            "data_source": {
+              "type": "azuread_service_principal",
+              "arguments": {
+                "display_name": "principal_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal"
+            }
+          },
+          {
+            "resource": "azuread_user",
+            "attribute": "object_id",
+            "alias": "user_principal_name",
+            "data_source": {
+              "type": "azuread_user",
+              "arguments": {
+                "user_principal_name": "user_principal_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal"
+            }
+          },
+          {
+            "resource": "azuread_group",
+            "attribute": "object_id",
+            "alias": "group_name",
+            "data_source": {
+              "type": "azuread_group",
+              "arguments": {
+                "display_name": "group_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal"
+            }
+          },
+          {
+            "resource": "azurerm_user_assigned_identity",
+            "attribute": "principal_id",
+            "alias": "user_assigned_identity_name"
+          }
+        ],
+        "note": "Principal from azuread modules or a user-assigned identity in the state, then an Azure AD lookup unless existing_principal = false."
+      }
+    },
+    "azurerm_key_vault_managed_hardware_security_module_role_assignment": {
+      "role_definition_id": {
+        "resource": "azurerm_key_vault_managed_hardware_security_module_role_definition",
+        "attribute": "resource_manager_id",
+        "note": "Wants the Managed HSM role definition's '.../providers/Microsoft.Authorization/roleDefinitions/...' ID (validator), which is resource_manager_id, not an Azure RBAC role definition."
+      }
+    },
+    "azurerm_key_vault_secret": {
+      "key_vault_id": {
+        "targets": [
+          {
+            "resource": "azurerm_key_vault",
+            "attribute": "id",
+            "alias": "key_vault_name",
+            "data_source": {
+              "type": "azurerm_key_vault",
+              "arguments": {
+                "name": "key_vault_name",
+                "resource_group_name": "key_vault_resource_group_name"
+              },
+              "attribute": "id"
+            }
+          }
+        ],
+        "note": "A key vault in the state by name, else an existing vault looked up with azurerm_key_vault when key_vault_resource_group_name is set."
+      }
+    },
+    "azurerm_lighthouse_assignment": {
+      "lighthouse_definition_id": {
+        "resource": "azurerm_lighthouse_definition",
+        "attribute": "id",
+        "note": "Not an exception, recorded so it isn't 'fixed': wants the full registrationDefinitions ID (validator), which is .id; the same-named lighthouse_definition_id attribute is the bare GUID."
+      }
+    },
+    "azurerm_lighthouse_definition": {
+      "lighthouse_definition_id": {
+        "lookup": false,
+        "note": "The GUID of the definition being created (validator: UUID), not a reference."
+      },
+      "role_definition_id": {
+        "lookup": false,
+        "note": "authorization / eligible_authorization role_definition_id is a bare UUID of a built-in role (Lighthouse doesn't support custom roles), so there is no same-state source."
+      }
+    },
+    "azurerm_linux_virtual_machine": {
+      "admin_password": {
+        "secret": {
+          "generate": false
+        },
+        "note": "Linux VMs use SSH keys unless disable_password_authentication = false: the password is managed but generated only with admin_password_generate = true."
+      },
+      "public_key": {
+        "path": "admin_ssh_key",
+        "targets": [
+          {
+            "resource": "azurerm_ssh_public_key",
+            "attribute": "public_key",
+            "alias": "ssh_public_key_name"
+          }
+        ],
+        "note": "admin_ssh_key.public_key: given, else an ssh_public_key in the state by ssh_public_key_name, else a generated key pair (ssh_key_generate, default on) whose private key goes to Key Vault.",
+        "secret": {
+          "type": "ssh_key",
+          "generate": true
+        }
+      }
+    },
+    "azurerm_linux_virtual_machine_scale_set": {
+      "admin_password": {
+        "secret": {
+          "generate": false
+        },
+        "note": "Same as the Linux VM: generated only with admin_password_generate = true (password authentication enabled)."
+      },
+      "public_key": {
+        "path": "admin_ssh_key",
+        "targets": [
+          {
+            "resource": "azurerm_ssh_public_key",
+            "attribute": "public_key",
+            "alias": "ssh_public_key_name"
+          }
+        ],
+        "secret": {
+          "type": "ssh_key",
+          "generate": true
+        },
+        "note": "Same as the Linux VM: given, an ssh_public_key in the state, or a generated key pair stored in Key Vault."
+      }
+    },
+    "azurerm_log_analytics_saved_search": {
+      "log_analytics_workspace_id": {
+        "resource": "azurerm_log_analytics_workspace",
+        "attribute": "id",
+        "note": "Example (benign): restates the generator's default match, so output is unchanged. Copy this shape for a real exception."
+      }
+    },
+    "azurerm_managed_application_definition": {
+      "role_definition_id": {
+        "attribute": "role_definition_id",
+        "note": "authorization.role_definition_id is a bare UUID (validator): the role definition's GUID, not its resource ID."
+      }
+    },
+    "azurerm_management_group_subscription_association": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_marketplace_role_assignment": {
+      "role_definition_id": {
+        "lookup": false,
+        "note": "The resource has its own role_definition_name argument (mutually exclusive with role_definition_id) that the provider resolves itself, and it collides with the generated *_name alias, so the lookup is off: set role_definition_name, or role_definition_id explicitly."
+      }
+    },
+    "azurerm_network_manager_subscription_connection": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_postgresql_flexible_server_database": {
+      "server_id": {
+        "resource": "azurerm_postgresql_flexible_server",
+        "note": "The suffix match finds no azurerm_server."
+      }
+    },
+    "azurerm_role_assignment": {
+      "principal_id": {
+        "targets": [
+          {
+            "resource": "azuread_service_principal",
+            "attribute": "object_id",
+            "alias": "principal_name",
+            "data_source": {
+              "type": "azuread_service_principal",
+              "arguments": {
+                "display_name": "principal_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal"
+            }
+          },
+          {
+            "resource": "azuread_user",
+            "attribute": "object_id",
+            "alias": "user_name",
+            "data_source": {
+              "type": "azuread_user",
+              "arguments": {
+                "user_principal_name": "user_principal_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal"
+            }
+          },
+          {
+            "resource": "azuread_group",
+            "attribute": "object_id",
+            "alias": "group_name",
+            "data_source": {
+              "type": "azuread_group",
+              "arguments": {
+                "display_name": "group_name"
+              },
+              "attribute": "object_id",
+              "enabled_by": "existing_principal"
+            }
+          }
+        ],
+        "note": "Principal from azuread modules in the same state (service principal, user, group by name), then an Azure AD lookup for names not in those outputs unless existing_principal = false. Users are matched by display name in outputs and by user_principal_name in Azure AD."
+      },
+      "role_definition_id": {
+        "lookup": false,
+        "note": "The resource has its own role_definition_name argument (mutually exclusive with role_definition_id) that the provider resolves itself, and it collides with the generated *_name alias, so the lookup is off: set role_definition_name, or role_definition_id explicitly."
+      },
+      "scope": {
+        "targets": [
+          {
+            "resource": "*",
+            "attribute": "id",
+            "alias": "scope_name",
+            "data_source": {
+              "type": "azurerm_resources",
+              "arguments": {
+                "name": "scope_name",
+                "resource_group_name": "scope_resource_group_name"
+              },
+              "attribute": "resources[0].id"
+            }
+          }
+        ],
+        "note": "Scope can be any resource: every azurerm module in the state is wired into azurerm_scope_outputs (role_assignment.module.tf), matched by name or \"<type>/<name>\". A name not found there is looked up with azurerm_resources when scope_resource_group_name is set."
+      }
+    },
+    "azurerm_role_definition": {
+      "role_definition_id": {
+        "lookup": false,
+        "note": "The GUID of the role definition being created (validator: UUID), not a reference."
+      }
+    },
+    "azurerm_servicebus_subscription_rule": {
+      "subscription_id": {
+        "resource": "azurerm_servicebus_subscription",
+        "attribute": "id",
+        "note": "A Service Bus topic subscription ID (validator: Subscriptions2 ID), not an Azure subscription: the suffix match picked azurerm_subscription."
+      }
+    },
+    "azurerm_storage_account": {
+      "primary_access_key": {
+        "store": {
+          "default": false
+        },
+        "note": "Set primary_access_key_store = true to push the key to Key Vault; the secret follows key rotations."
+      },
+      "primary_connection_string": {
+        "store": {
+          "default": false
+        },
+        "note": "Set primary_connection_string_store = true to push the connection string to Key Vault."
+      }
+    },
+    "azurerm_subscription": {
+      "subscription_id": {
+        "lookup": false,
+        "note": "The existing subscription GUID to create an alias for (validator: UUID); a reference to itself."
+      }
+    },
+    "azurerm_subscription_cost_management_export": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_subscription_cost_management_view": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_subscription_policy_assignment": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_subscription_policy_exemption": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_subscription_policy_remediation": {
+      "subscription_id": {
+        "format": "/subscriptions/%s",
+        "note": "Wants /subscriptions/<guid> (validator: Subscription ID). azurerm_subscription.id is the alias path, so the GUID is wrapped."
+      }
+    },
+    "azurerm_virtual_network_gateway_connection": {
+      "shared_key": {
+        "secret": {
+          "generate": false
+        },
+        "note": "IPsec / VNet-to-VNet shared key: managed, generated with shared_key_generate = true (ExpressRoute connections don't take one)."
+      }
+    }
+  }
+}

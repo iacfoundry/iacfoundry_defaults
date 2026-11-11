@@ -9,6 +9,8 @@
     "github_url": "https://github.com/hashicorp/terraform-provider-google"
   },
   "Module": {
+    "enabled_flag": "resource_enabled",
+    "lookup_exceptions": "hashicorp-google-v7.10.0.json",
     "override_readme_callout": false
   },
   "ProviderFiles": {
