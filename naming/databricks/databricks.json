@@ -1,0 +1,14 @@
+{
+  "developer": "databricks",
+  "provider": "databricks",
+  "schemes": {},
+  "policies": {},
+  "globalPolicy": {
+    "enforceStandards": true,
+    "defaultSeparator": "-",
+    "globalCase": "insensitive",
+    "forbiddenChars": "[^a-zA-Z0-9-_]",
+    "excludedWords": "temp,test,dummy,invalid,draft",
+    "mandatoryComponents": []
+  }
+}

@@ -1,0 +1,91 @@
+[
+  {
+    "id": "def-abbrev-aws",
+    "name": "Resource Abbreviation",
+    "type": "key-value",
+    "headers": [
+      "Resource",
+      "Abbrev",
+      "Category"
+    ],
+    "values": [
+      {
+        "id": "ab-ec2",
+        "Resource": "aws_instance",
+        "Abbrev": "ec2",
+        "Category": "Compute",
+        "enabled": true
+      },
+      {
+        "id": "ab-s3",
+        "Resource": "aws_s3_bucket",
+        "Abbrev": "s3",
+        "Category": "Storage",
+        "enabled": true
+      },
+      {
+        "id": "ab-sg",
+        "Resource": "aws_security_group",
+        "Abbrev": "sg",
+        "Category": "Network",
+        "enabled": true
+      },
+      {
+        "id": "ab-vpc",
+        "Resource": "aws_vpc",
+        "Abbrev": "vpc",
+        "Category": "Network",
+        "enabled": true
+      },
+      {
+        "id": "ab-snet",
+        "Resource": "aws_subnet",
+        "Abbrev": "snet",
+        "Category": "Network",
+        "enabled": true
+      },
+      {
+        "id": "ab-iam",
+        "Resource": "aws_iam_role",
+        "Abbrev": "iam",
+        "Category": "Security",
+        "enabled": true
+      },
+      {
+        "id": "ab-rds",
+        "Resource": "aws_db_instance",
+        "Abbrev": "rds",
+        "Category": "Database",
+        "enabled": true
+      },
+      {
+        "id": "ab-lmb",
+        "Resource": "aws_lambda_function",
+        "Abbrev": "lmb",
+        "Category": "Compute",
+        "enabled": true
+      },
+      {
+        "id": "ab-eks",
+        "Resource": "aws_eks_cluster",
+        "Abbrev": "eks",
+        "Category": "Containers",
+        "enabled": true
+      },
+      {
+        "id": "ab-sqs",
+        "Resource": "aws_sqs_queue",
+        "Abbrev": "sqs",
+        "Category": "Messaging",
+        "enabled": true
+      },
+      {
+        "id": "ab-sns",
+        "Resource": "aws_sns_topic",
+        "Abbrev": "sns",
+        "Category": "Messaging",
+        "enabled": true
+      }
+    ]
+  }
+]

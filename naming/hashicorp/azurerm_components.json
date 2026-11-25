@@ -1,0 +1,52 @@
+[
+  {
+    "id": "def-1779406854983",
+    "name": "Scope",
+    "type": "key-value",
+    "headers": [
+      "Key"
+    ],
+    "values": [
+      {
+        "id": "val-1779406854983-1",
+        "enabled": true,
+        "Key": "network"
+      },
+      {
+        "id": "val-1779406905552-2",
+        "enabled": true,
+        "Key": "storage"
+      },
+      {
+        "id": "val-1779406912229-3",
+        "enabled": true,
+        "Key": "compute"
+      }
+    ]
+  },
+  {
+    "id": "def-1779490549339",
+    "name": "Abbreviation",
+    "type": "key-value",
+    "headers": [
+      "Resource",
+      "Abbrev"
+    ],
+    "values": [
+      {
+        "id": "val-1779490549339-1",
+        "enabled": true,
+        "Resource": "resource_group",
+        "Abbrev": "rg"
+      },
+      {
+        "id": "val-1779491278180-2",
+        "enabled": true,
+        "Resource": "",
+        "Abbrev": "new-abbrev"
+      }
+    ],
+    "isResourceRelated": true,
+    "resourceColumn": "Resource"
+  }
+]

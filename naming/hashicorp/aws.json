@@ -1,0 +1,35 @@
+{
+  "developer": "hashicorp",
+  "provider": "aws",
+  "schemes": {},
+  "policies": {
+    "aws_s3_bucket": {
+      "resource": "aws_s3_bucket",
+      "minLength": 3,
+      "maxLength": 63,
+      "regexPattern": "^[a-z0-9.-]+$",
+      "regexDescription": "lowercase alphanumeric, hyphens, periods",
+      "preventDelimiters": false,
+      "caseSensitivity": "lowercase",
+      "description": "AWS S3 Bucket names must be between 3 and 63 characters long, containing lowercase letters, numbers, hyphens, or periods, and must start/end with a letter or number."
+    },
+    "aws_iam_role": {
+      "resource": "aws_iam_role",
+      "minLength": 1,
+      "maxLength": 64,
+      "regexPattern": "^[a-zA-Z0-9+=,.@-_]+$",
+      "regexDescription": "alphanumeric and +=,.@-_ characters",
+      "preventDelimiters": false,
+      "caseSensitivity": "insensitive",
+      "description": "AWS IAM Role names must be between 1 and 64 characters long, consisting of alphanumeric characters and standard symbols (+=,.@-_)."
+    }
+  },
+  "globalPolicy": {
+    "enforceStandards": true,
+    "defaultSeparator": "-",
+    "globalCase": "insensitive",
+    "forbiddenChars": "[^a-zA-Z0-9-_]",
+    "excludedWords": "temp,test,dummy,invalid,draft",
+    "mandatoryComponents": []
+  }
+}

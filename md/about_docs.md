@@ -61,3 +61,16 @@ IaC Foundry integrates with AI providers (OpenAI, Azure AI Foundry, Anthropic, G
     -   Use the **Paste List** button to bulk-add a list of resources.
     -   Use the **Graph** view to select resources and their dependencies visually.
 4.  **Preview and Download**: The "Module Generator" tab will show a preview of the generated files. You can then download the complete module as a ZIP archive.
+
+## Keeping a module repo's shared files current
+
+Generate modules as you need them, then rebuild the files that tie a provider's modules together
+(`<provider>.modules.tf`, `<provider>.variables.tf`, tests, the defaults module, role assignment wiring) from the
+modules the repo actually has. Each module is wired from its own files, hand-written blocks are kept, and no
+module folder is changed:
+
+-   **CLI or pipeline** (GitHub Actions, Azure DevOps): `npm run generate -- --manifest <file> --out <repo> --provider-files`, with `--check` on pull requests.
+-   **API**: `POST /api/generate/provider-files` with the repo's `.tf` files.
+-   **MCP**: the `generate_provider_files` tool with a local checkout (`repoDir`).
+
+The root `terraform.required_providers.tf` is built the same way from the list of providers in use: `--required-providers`, `POST /api/generate/required-providers`, or the `generate_required_providers` MCP tool.

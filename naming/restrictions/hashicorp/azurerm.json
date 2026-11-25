@@ -1,0 +1,95 @@
+{
+  "developer": "hashicorp",
+  "provider": "azurerm",
+  "description": "Azure naming rules the azurerm provider does not check itself: where each name must be unique, and Azure limits stricter than (or missing from) the provider's validators. Fields replace the measured provider rules one by one; leave a field out to keep the provider's value.",
+  "docs": "https://learn.microsoft.com/azure/azure-resource-manager/management/resource-name-rules",
+  "resources": {
+    "azurerm_resource_group": { "uniqueness": "subscription" },
+    "azurerm_storage_account": { "uniqueness": "global" },
+    "azurerm_key_vault": { "uniqueness": "global" },
+    "azurerm_container_registry": { "uniqueness": "global" },
+    "azurerm_linux_web_app": {
+      "uniqueness": "global", "minLength": 2, "firstChars": "0-9A-Za-z", "lastChars": "0-9A-Za-z",
+      "notes": ["Becomes <name>.azurewebsites.net, so it must be unique across Azure."]
+    },
+    "azurerm_windows_web_app": {
+      "uniqueness": "global", "minLength": 2, "firstChars": "0-9A-Za-z", "lastChars": "0-9A-Za-z",
+      "notes": ["Becomes <name>.azurewebsites.net, so it must be unique across Azure."]
+    },
+    "azurerm_linux_function_app": {
+      "uniqueness": "global", "minLength": 2, "firstChars": "0-9A-Za-z", "lastChars": "0-9A-Za-z",
+      "notes": ["Becomes <name>.azurewebsites.net, so it must be unique across Azure."]
+    },
+    "azurerm_windows_function_app": {
+      "uniqueness": "global", "minLength": 2, "firstChars": "0-9A-Za-z", "lastChars": "0-9A-Za-z",
+      "notes": ["Becomes <name>.azurewebsites.net, so it must be unique across Azure."]
+    },
+    "azurerm_service_plan": { "uniqueness": "resource_group" },
+    "azurerm_cosmosdb_account": { "uniqueness": "global", "maxLength": 44, "firstChars": "0-9a-z", "lastChars": "0-9a-z" },
+    "azurerm_mssql_server": { "uniqueness": "global" },
+    "azurerm_postgresql_flexible_server": { "uniqueness": "global", "minLength": 3 },
+    "azurerm_mysql_flexible_server": { "uniqueness": "global" },
+    "azurerm_redis_cache": {
+      "uniqueness": "global", "minLength": 1, "maxLength": 63,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-0-9A-Za-z", "lastChars": "0-9A-Za-z", "separators": "-", "noRepeatSeparators": "-"
+    },
+    "azurerm_search_service": {
+      "uniqueness": "global", "minLength": 2, "maxLength": 60, "case": "lower",
+      "firstChars": "0-9a-z", "middleChars": "\\-0-9a-z", "lastChars": "0-9a-z", "separators": "-", "noRepeatSeparators": "-"
+    },
+    "azurerm_api_management": { "uniqueness": "global", "firstChars": "A-Za-z", "lastChars": "0-9A-Za-z" },
+    "azurerm_servicebus_namespace": { "uniqueness": "global" },
+    "azurerm_eventhub_namespace": { "uniqueness": "global" },
+    "azurerm_app_configuration": { "uniqueness": "global" },
+    "azurerm_data_factory": { "uniqueness": "global", "minLength": 3, "maxLength": 63 },
+    "azurerm_synapse_workspace": { "uniqueness": "global" },
+    "azurerm_kubernetes_cluster": {
+      "uniqueness": "resource_group", "minLength": 1, "maxLength": 63,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-0-9A-Z_a-z", "lastChars": "0-9A-Za-z", "separators": "-_"
+    },
+    "azurerm_virtual_network": {
+      "uniqueness": "resource_group", "minLength": 2, "maxLength": 64,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-.0-9A-Z_a-z", "lastChars": "0-9A-Z_a-z", "separators": "-_."
+    },
+    "azurerm_subnet": {
+      "uniqueness": "parent", "minLength": 1, "maxLength": 80,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-.0-9A-Z_a-z", "lastChars": "0-9A-Z_a-z", "separators": "-_.",
+      "notes": ["Unique within its virtual network."]
+    },
+    "azurerm_network_security_group": {
+      "uniqueness": "resource_group", "minLength": 1, "maxLength": 80,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-.0-9A-Z_a-z", "lastChars": "0-9A-Z_a-z", "separators": "-_."
+    },
+    "azurerm_public_ip": {
+      "uniqueness": "resource_group", "minLength": 1, "maxLength": 80,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-.0-9A-Z_a-z", "lastChars": "0-9A-Z_a-z", "separators": "-_."
+    },
+    "azurerm_network_interface": {
+      "uniqueness": "resource_group", "minLength": 1, "maxLength": 80,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-.0-9A-Z_a-z", "lastChars": "0-9A-Z_a-z", "separators": "-_."
+    },
+    "azurerm_route_table": { "uniqueness": "resource_group" },
+    "azurerm_bastion_host": { "uniqueness": "resource_group" },
+    "azurerm_private_endpoint": { "uniqueness": "resource_group" },
+    "azurerm_linux_virtual_machine": { "uniqueness": "resource_group", "maxLength": 64 },
+    "azurerm_windows_virtual_machine": {
+      "uniqueness": "resource_group",
+      "notes": ["The Windows computer name defaults to this name and is limited to 15 characters; set computer_name for longer names."]
+    },
+    "azurerm_log_analytics_workspace": { "uniqueness": "resource_group" },
+    "azurerm_application_insights": { "uniqueness": "resource_group", "maxLength": 260 },
+    "azurerm_user_assigned_identity": {
+      "uniqueness": "resource_group", "minLength": 3, "maxLength": 128,
+      "firstChars": "0-9A-Za-z", "middleChars": "\\-0-9A-Z_a-z", "lastChars": "\\-0-9A-Z_a-z", "separators": "-_"
+    },
+    "azurerm_cognitive_account": {
+      "uniqueness": "resource_group",
+      "notes": ["custom_subdomain_name, when set, must be unique across Azure."]
+    },
+    "azurerm_container_app_environment": { "uniqueness": "resource_group" },
+    "azurerm_container_app": { "uniqueness": "resource_group" },
+    "azurerm_static_web_app": { "uniqueness": "resource_group" },
+    "azurerm_databricks_workspace": { "uniqueness": "resource_group" },
+    "azurerm_managed_redis": { "uniqueness": "global" }
+  }
+}

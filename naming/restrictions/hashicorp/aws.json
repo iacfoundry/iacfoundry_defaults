@@ -1,0 +1,19 @@
+{
+  "developer": "hashicorp",
+  "provider": "aws",
+  "description": "AWS naming rules. No provider-rules file is extracted for aws yet, so these entries are the whole restriction.",
+  "resources": {
+    "aws_s3_bucket": {
+      "uniqueness": "global", "minLength": 3, "maxLength": 63, "case": "lower",
+      "firstChars": "0-9a-z", "middleChars": "\\-.0-9a-z", "lastChars": "0-9a-z", "separators": "-.", "noRepeatSeparators": ".",
+      "notes": ["Bucket names share one namespace across all AWS accounts in a partition."],
+      "docs": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html"
+    },
+    "aws_iam_role": {
+      "uniqueness": "account", "minLength": 1, "maxLength": 64,
+      "firstChars": "+,\\-.0-9=@A-Z_a-z", "middleChars": "+,\\-.0-9=@A-Z_a-z", "lastChars": "+,\\-.0-9=@A-Z_a-z", "separators": "-_.",
+      "notes": ["Unique within the AWS account, ignoring case."],
+      "docs": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html"
+    }
+  }
+}

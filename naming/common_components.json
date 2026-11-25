@@ -1,0 +1,126 @@
+[
+  {
+    "id": "def-env",
+    "name": "Environment",
+    "type": "key-value",
+    "headers": [
+      "Key"
+    ],
+    "values": [
+      {
+        "id": "env-prd",
+        "Key": "prd",
+        "enabled": true
+      },
+      {
+        "id": "env-uat",
+        "Key": "uat",
+        "enabled": true
+      },
+      {
+        "id": "env-tst",
+        "Key": "tst",
+        "enabled": true
+      },
+      {
+        "id": "env-dev",
+        "Key": "dev",
+        "enabled": true
+      },
+      {
+        "id": "env-sbx",
+        "Key": "sbx",
+        "enabled": true
+      }
+    ],
+    "isDefault": true
+  },
+  {
+    "id": "def-1779406448655",
+    "name": "Entity",
+    "type": "key-value",
+    "headers": [
+      "Key",
+      "Code"
+    ],
+    "values": [
+      {
+        "id": "val-1779406448655-1",
+        "Code": "ih",
+        "enabled": true,
+        "Key": "Intermountain Health"
+      },
+      {
+        "id": "val-1779406477530-2",
+        "enabled": true,
+        "Key": "SelectHealth",
+        "Code": "sh"
+      }
+    ]
+  },
+  {
+    "id": "def-1779406534381",
+    "name": "Department",
+    "type": "key-value",
+    "headers": [
+      "Key",
+      "Code"
+    ],
+    "values": [
+      {
+        "id": "val-1779406534381-1",
+        "Key": "Proactive Care Analytics",
+        "Code": "pca",
+        "enabled": true
+      },
+      {
+        "id": "val-1779406597831-2",
+        "enabled": true,
+        "Key": "CloudOps",
+        "Code": "ops"
+      }
+    ]
+  },
+  {
+    "id": "def-1779406854983",
+    "name": "Scope",
+    "type": "key-value",
+    "headers": [
+      "Key"
+    ],
+    "values": [
+      {
+        "id": "val-1779406854983-1",
+        "enabled": true,
+        "Key": "network"
+      },
+      {
+        "id": "val-1779406905552-2",
+        "enabled": true,
+        "Key": "storage"
+      },
+      {
+        "id": "val-1779406912229-3",
+        "enabled": true,
+        "Key": "compute"
+      }
+    ]
+  },
+  {
+    "id": "def-workload",
+    "name": "Workload",
+    "type": "key-value",
+    "headers": [
+      "Key",
+      "Code"
+    ],
+    "values": [
+      {
+        "id": "wl-edp",
+        "Key": "EDP",
+        "Code": "edp",
+        "enabled": true
+      }
+    ]
+  }
+]

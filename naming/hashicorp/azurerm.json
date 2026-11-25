@@ -1,0 +1,87 @@
+{
+  "developer": "hashicorp",
+  "provider": "azurerm",
+  "schemes": {
+    "resource_group": {
+      "schemeId": "hashicorp_azurerm_resource_group",
+      "developer": "hashicorp",
+      "provider": "azurerm",
+      "resource": "resource_group",
+      "separator": "-",
+      "components": [
+        {
+          "id": "c-1793894981769-0",
+          "label": "Abbreviation",
+          "value": "rg",
+          "selectedValueId": "val-1779490549339-1",
+          "type": "linked",
+          "isResourceRelated": true,
+          "showDelimiter": true
+        },
+        {
+          "id": "c-1793894981769-1",
+          "label": "Workload",
+          "value": "edp",
+          "selectedValueId": "wl-edp",
+          "type": "linked",
+          "showDelimiter": true
+        },
+        {
+          "id": "c-1793894981769-2",
+          "label": "Environment",
+          "value": "dev",
+          "selectedValueId": "env-dev",
+          "type": "linked",
+          "showDelimiter": true
+        },
+        {
+          "id": "c-1793894981769-3",
+          "label": "Name",
+          "value": "ai-and-machine-learning",
+          "type": "custom",
+          "showDelimiter": false
+        }
+      ]
+    }
+  },
+  "policies": {
+    "azurerm_storage_account": {
+      "resource": "azurerm_storage_account",
+      "minLength": 3,
+      "maxLength": 24,
+      "regexPattern": "^[a-z0-9]+$",
+      "regexDescription": "lowercase letters and numbers only",
+      "preventDelimiters": true,
+      "caseSensitivity": "lowercase",
+      "description": "Azure Storage Account naming requires globally unique names between 3 and 24 characters, consisting of lowercase letters and numbers only, with no special characters or hyphens."
+    },
+    "azurerm_key_vault": {
+      "resource": "azurerm_key_vault",
+      "minLength": 3,
+      "maxLength": 24,
+      "regexPattern": "^[a-zA-Z0-9-]+$",
+      "regexDescription": "alphanumeric characters and hyphens",
+      "preventDelimiters": false,
+      "caseSensitivity": "insensitive",
+      "description": "Azure Key Vault names must be alphanumeric and hyphens only, 3 to 24 characters long, must start with a letter, and cannot contain consecutive or ending hyphens."
+    },
+    "azurerm_resource_group": {
+      "resource": "azurerm_resource_group",
+      "minLength": 1,
+      "maxLength": 90,
+      "regexPattern": "^[a-zA-Z0-9-_()]+$",
+      "regexDescription": "alphanumeric, hyphens, underscores, parentheses",
+      "preventDelimiters": false,
+      "caseSensitivity": "insensitive",
+      "description": "Azure Resource Group names must be between 1 and 90 characters, containing alphanumeric, underscores, hyphens, or parentheses, and cannot end with a period."
+    }
+  },
+  "globalPolicy": {
+    "enforceStandards": true,
+    "defaultSeparator": "-",
+    "globalCase": "insensitive",
+    "forbiddenChars": "[^a-zA-Z0-9-_]",
+    "excludedWords": "temp,test,dummy,invalid,draft",
+    "mandatoryComponents": []
+  }
+}
